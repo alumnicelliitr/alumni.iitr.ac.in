@@ -33,44 +33,39 @@
     </div>
     <div class="ui menu top lapa-nav">
       <div class="ui container">
-        <a class="item" href="index.html">
-          Home
-        </a>
-        <div class="ui pointing dropdown link item lapa">
-          <span class="text">Shopping</span>
-          <i class="dropdown icon"></i>
-          <div class="menu">
-            <div class="header">Categories</div>
-            <div class="item">
-              <span class="text">Clothing</span>
-              <i class="dropdown icon"></i>
-              <div class="menu pointing right">
-                <div class="header">Mens</div>
-                <div class="item">Shirts</div>
-                <div class="item">Pants</div>
-                <div class="item">Jeans</div>
-                <div class="item">Shoes</div>
-                <div class="divider"></div>
-                <div class="header">Womens</div>
-                <div class="item">Dresses</div>
-                <div class="item">Shoes</div>
-                <div class="item">Bags</div>
-              </div>
+        {% for tab in mTabs %}
+          {% if tab.children %}
+          <div class="ui pointing dropdown link item lapa">
+            <span class="text">{{ tab.title }}</span>
+            <i class="dropdown icon"></i>
+            <div class="menu">
+              {% for child in tab.children %}
+                <div class="item">
+                  <span class="text">{{ child.title }}</span>
+                  <i class="dropdown icon"></i>
+                  {% if child.children %}
+                    <div class="menu pointing right">
+                    {% for grandchild in child.children %}
+                      <div class="item">{{ grandchild.title }}</div>
+                    {% endfor %}
+                    </div>
+                 {% endif %}
+                 </div>
+              {% endfor %}
             </div>
-            <div class="item">Home Goods</div>
-            <div class="item">Bedroom</div>
-            <div class="divider"></div>
-            <div class="header">Order</div>
-            <div class="item">Status</div>
-            <div class="item">Cancellations</div>
           </div>
-        </div>
-        <a class="item">
-          Forums
-        </a>
-        <a class="item">
-          Contact Us
-        </a>
+          {% else %}
+            {% if tab.url %}
+            <a class="item" href="{{ tab.url }}">
+              {{ tab.title }}
+            </a>
+            {% else %}
+            <a class="item" href="#">
+              {{ tab.title }}
+            </a>
+            {% endif %}
+          {% endif %}
+        {% endfor %}
       </div>
     </div>
 
@@ -89,17 +84,9 @@
     <h2 class="ui header center aligned ">News and Announcements</h2>
     <div class="ui container">
       <div class="carousel news-carousel">
+      {% for news in mNews %}
         <div class="carousel-cell news-cell"></div>
-        <div class="carousel-cell news-cell"></div>
-        <div class="carousel-cell news-cell"></div>
-        <div class="carousel-cell news-cell"></div>
-        <div class="carousel-cell news-cell"></div>
-        <div class="carousel-cell news-cell"></div>
-        <div class="carousel-cell news-cell"></div>
-        <div class="carousel-cell news-cell"></div>
-        <div class="carousel-cell news-cell"></div>
-        <div class="carousel-cell news-cell"></div>
-        <div class="carousel-cell news-cell"></div>
+      {% endfor %}
       </div>
     </div>
   </section>
@@ -111,31 +98,18 @@
           <h4 class="ui top attached block header">
             Important Links
           </h4>
+          {% for link in mLinks %}
           <div class="attached ui segment">
+            <a href="{{ link.url }}">
+            {{ link.title }}
+            </a>
+          </div>
+          {% endfor %}
+          <!--<div class="bottom attached ui segment">
             <a href="">
               Link
             </a>
-          </div>
-          <div class="attached ui segment">
-            <a href="">
-              Link
-            </a>
-          </div>
-          <div class="attached ui segment">
-            <a href="">
-              Link
-            </a>
-          </div>
-          <div class="attached ui segment">
-            <a href="">
-              Link
-            </a>
-          </div>
-          <div class="bottom attached ui segment">
-            <a href="">
-              Link
-            </a>
-          </div>
+          </div>-->
         </div>
         <div class="eight wide column">
           <h4 class="ui top attached block header">
@@ -143,48 +117,22 @@
           </h4>
           <div class="bottom attached ui segment">
             <div class="ui link items divided relaxed">
+              {% for event in mEvents %}
               <div class="item">
                 <div class="ui tiny events-date">
-                  <div class="event-date">01</div>
-                  <div class="event-month">Mar</div>
+                  <div class="event-date">{{ event.event_date|date:"d" }}</div>
+                  <div class="event-month">{{ event.event_date|date:"M" }}</div>
                 </div>
                 <div class="content">
-                  <div class="header">Stevie Feliciano</div>
+                  <div class="header">{{ event.title }}</div>
                   <div class="description">
                     <p>
-                      You can include an arbitrary amount of metadata using your own class conventions, all child elements will automatically be spaced
+                    {{ event.short_description }}
                     </p>
                   </div>
                 </div>
               </div>
-              <div class="item">
-                <div class="ui tiny events-date">
-                  <div class="event-date">01</div>
-                  <div class="event-month">Mar</div>
-                </div>
-                <div class="content">
-                  <div class="header">Stevie Feliciano</div>
-                  <div class="description">
-                    <p>
-                      You can include an arbitrary amount of metadata using your own class conventions, all child elements will automatically be spaced
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div class="item">
-                <div class="ui tiny events-date">
-                  <div class="event-date">01</div>
-                  <div class="event-month">Mar</div>
-                </div>
-                <div class="content">
-                  <div class="header">Stevie Feliciano</div>
-                  <div class="description">
-                    <p>
-                      You can include an arbitrary amount of metadata using your own class conventions, all child elements will automatically be spaced
-                    </p>
-                  </div>
-                </div>
-              </div>
+              {% endfor %}
             </div>
           </div>
         </div>
