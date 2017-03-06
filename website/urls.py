@@ -18,5 +18,5 @@ from website import views
 
 urlpatterns = [
 	url(r'^$', views.index),
-  url(r'^(?P<level0>[a-z]+)$',views.level0),
+  url(r'^(?P<level0>[a-z]+)$',views.level),
 ]

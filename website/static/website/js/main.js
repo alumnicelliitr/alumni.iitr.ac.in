@@ -9,8 +9,9 @@ $(document).ready(function() {
       $('.lapa-nav').removeClass('fixed'); 
   })
   $('.ui.dropdown.lapa').dropdown({
-     on: 'hover'
-  });
+     on: 'hover',
+    action: 'select'
+   });
 
   $('.main-carousel').flickity({
     // options

@@ -13,19 +13,31 @@ def load_nodes(level,parent = None):
     tab.children = load_nodes(level+1,tab)
   return mTabs
 
-def level0(request,level0):
+def load_level(request,level,title):
+  #Find path till this
+  return 1
+
+def level(request,level0,level1 = None,level2 = None):
+  mTabs = load_nodes(0,None)
+  if level1 == None:
+    active = 1
+    #only level0
+  elif level2 == None:
+    #till level1
+    active = 2
+  else:
+    #till level2
+    active = 3
   context = {
-    'active':level0
+    'mTabs':mTabs,
+    'active':active,
   }
   return render(request,'website/page.html',context)
 
 def index(request):
   mTabs = load_nodes(0,None)
-
   mEvents = Event.objects.filter(visibility=True,expiry_date__gte=datetime.date.today()).order_by('priority')
-
   mNews = News.objects.filter(visibility=True,expiry__gte=datetime.date.today()).order_by('priority')
-
   mLinks = Link.objects.filter(visibility=True).order_by('priority')
   context = {
     'mTabs':mTabs,

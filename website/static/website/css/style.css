@@ -139,3 +139,9 @@ html{
   margin-top: 20px;
   margin-bottom: 20px;
 }
+.lapa-text{
+  color:rgba(0,0,0,.87);
+}
+.lapa-text:hover{
+  color:rgba(0,0,0,0.9);
+}
