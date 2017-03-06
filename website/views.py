@@ -13,6 +13,12 @@ def load_nodes(level,parent = None):
     tab.children = load_nodes(level+1,tab)
   return mTabs
 
+def level0(request,level0):
+  context = {
+    'active':level0
+  }
+  return render(request,'website/page.html',context)
+
 def index(request):
   mTabs = load_nodes(0,None)
 
