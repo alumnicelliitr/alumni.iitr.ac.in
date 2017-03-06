@@ -1,0 +1,141 @@
+* { box-sizing: border-box; }
+body { font-family: sans-serif; }
+body, html{
+  min-height: 100%;
+  height: auto!important;
+}
+html{
+  position: relative;
+}
+.hero-cell{
+  width:98%;
+}
+
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+  .hero-cell {
+    width: 723px;
+  }
+}
+
+/* Small Monitor */
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
+  .hero-cell {
+    width: 993px;
+  }
+}
+
+/* Large Monitor */
+@media only screen and (min-width: 1200px) {
+  .hero-cell {
+    width: 1127px;
+  }
+  .hero .flickity-prev-next-button.previous{
+    left: calc(50% - 640px)!important;
+  }
+  .hero .flickity-prev-next-button.next{
+    right: calc(50% - 640px)!important; 
+  }
+}
+
+.hero, .hero-cell{
+  height: 360px;
+}
+
+.carousel-cell {
+  margin-right: 10px;
+  background: #8C8;
+  border-radius: 5px;
+  counter-increment: carousel-cell;
+}
+
+.carousel-cell.is-selected {
+  background: #ED2;
+}
+
+/* cell number */
+.carousel-cell:before {
+  display: block;
+  text-align: center;
+  content: counter(carousel-cell);
+  line-height: 200px;
+  font-size: 80px;
+  color: white;
+}
+
+.carousel-cell .news-cell {
+  width: 66% !important;
+  height: 200px;
+  margin-right: 10px;
+  //background: #8C8;
+  //border-radius: 5px;
+  counter-increment: gallery-cell;
+}
+
+/* cell number */
+.carousel-cell .news-cell:before {
+  display: block;
+  text-align: center;
+  content: counter(gallery-cell);
+  line-height: 200px;
+  font-size: 80px;
+  //color: white;
+}
+.ui.footer { 
+  padding:64px 0!important;
+}
+.foot{
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+.foot-r{
+  height: 290px;
+  width: 100%;
+}
+.logo-div{
+  height: 70px;
+}
+.lapa-nav{
+  margin:0!important;
+  box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.2);
+}
+.logo{
+  height: 56px;
+  margin:7px 0;
+}
+.main-section{
+}
+.news-section{
+  background-color: #f1f1f1;
+  padding: 32px 0 64px 0;
+}
+.news-cell{
+  width:240px;
+}
+.links-section{
+  padding:40px 0;
+}
+.events-date{
+  margin-right: 16px;
+  text-align: center;
+  background-color: #f3f4f5;
+  padding:8px;
+  height: 54px;
+  width: 54px;
+  flex: 0 0 auto;
+}
+.event-date{
+  font-size: 18px;
+  font-weight: 600;
+}
+.super-footer{
+  padding: 12px 0;
+  color:#7a7b7b;
+  font-size: 12px;
+  background-color: #151617
+}
+.content{
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
