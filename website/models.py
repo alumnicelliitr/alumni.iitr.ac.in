@@ -5,11 +5,12 @@ from ckeditor.fields import RichTextField
 # Create your models here.
 
 class Node(models.Model):
-  title = models.CharField(max_length=20)
+  url_name = models.CharField(max_length=50)  #Would be used for URL
+  title = models.CharField(max_length=50) #Would be used for Display Title
   parent = models.ForeignKey('self',null=True,blank=True,related_name='Parent')
   priority = models.IntegerField(default=0)
   visibility = models.BooleanField(default=True)
-  url = models.CharField(max_length=100,null=True,blank=True)
+  external_url = models.CharField(max_length=100,null=True,blank=True)
   level = models.IntegerField(default=0)
   content = RichTextField(default='')
   def __str__(self):

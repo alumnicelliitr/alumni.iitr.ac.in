@@ -29,7 +29,7 @@
     <!-- Add your site or application content here -->
     <div class="logo-div">
       <div class="ui container">
-        <a href="cscd">
+        <a href="/">
           <img src="/static/website/img/logo.png" alt="" class='logo'>
         </a>
       </div>
@@ -39,23 +39,23 @@
         {% for tab in mTabs %}
           {% if tab.children %}
           <div class="ui pointing dropdown link item lapa">
-            <a class="lapa-text text" href="#">{{ tab.title }}</a>
+            <a class="lapa-text text" href="{{ tab.url }}">{{ tab.title }}</a>
             <i class="dropdown icon"></i>
             <div class="menu">
               {% for child in tab.children %}
-                <a class="item" href="#">
+                <a class="item" href="{{ child.url }}">
                   <span class="text">{{ child.title }}</span>
-                 </a>
+                </a>
               {% endfor %}
             </div>
           </div>
           {% else %}
-            {% if tab.url %}
-            <a class="item" href="{{ tab.url }}">
+            {% if tab == active %}
+            <a class="item" href="#">
               {{ tab.title }}
             </a>
             {% else %}
-            <a class="item" href="#">
+            <a class="item" href="{{ tab.url }}">
               {{ tab.title }}
             </a>
             {% endif %}
