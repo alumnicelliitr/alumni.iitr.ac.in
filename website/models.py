@@ -51,3 +51,11 @@ class File(models.Model):
   file_added = models.FileField(blank=False,upload_to='website/media/')
   def __str__(self):
     return self.title
+
+class PhotoSlider(models.Model):
+  title = models.CharField(max_length=50)
+  image = models.FileField(blank=False,upload_to='website/media/slider/')
+  visibility = models.BooleanField(default=True)
+  priority = models.IntegerField(default=0)
+  def __str__(self):
+    return self.title

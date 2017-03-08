@@ -54,7 +54,14 @@ html{
 
 /* cell number */
 .carousel-cell:before {
-
+  display: block;
+  text-align:center;
+  line-height: 200px;
+  font-size:80px;
+}
+.carousel-cell > img {
+  width: 100%;
+  height:100%;
 }
 .news-cell.is-selected{
   background-color:transparent;
@@ -147,4 +154,7 @@ html{
 }
 .width100{
   width:100% !important;
+}
+.ui.vertical.menu .active.item {
+  background : rgba(255,255,255,0) !important;
 }

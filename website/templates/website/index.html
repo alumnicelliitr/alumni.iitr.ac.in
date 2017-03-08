@@ -8,11 +8,11 @@ Dean Of Alumni Affairs And International Relations
     <!-- Flickity HTML init -->
   <section class='main-section'>
     <div class="carousel hero main-carousel" >
-      <div class="carousel-cell hero-cell"></div>
-      <div class="carousel-cell hero-cell"></div>
-      <div class="carousel-cell hero-cell"></div>
-      <div class="carousel-cell hero-cell"></div>
-      <div class="carousel-cell hero-cell"></div>
+      {% for slider in mSlider %}
+        <div class="carousel-cell hero-cell">
+          <img src="/media/{{ slider.image }}" alt-text="{{ slider.title }}"></img>
+        </div>
+      {% endfor %}
     </div>
   </section>
 
@@ -30,7 +30,7 @@ Dean Of Alumni Affairs And International Relations
                 <p>{{news.short_description}}</p>
               </div>
             </div>
-          </div>   
+          </div>
         </div>
       {% endfor %}
       </div>
