@@ -14,7 +14,7 @@ class Node(models.Model):
   level = models.IntegerField(default=0)
   content = RichTextField(default='')
   def __str__(self):
-    return self.title
+    return self.title + " @ " + str(self.level)
 
 class News(models.Model):
   title = models.CharField(max_length=50)
@@ -43,5 +43,11 @@ class Link(models.Model):
   url = models.CharField(max_length=100)
   visibility = models.BooleanField(default=True)
   priority = models.IntegerField(default=0)
+  def __str__(self):
+    return self.title
+
+class File(models.Model):
+  title = models.CharField(max_length=50,unique=True)
+  file_added = models.FileField(blank=False,upload_to='website/media/')
   def __str__(self):
     return self.title

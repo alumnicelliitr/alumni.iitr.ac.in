@@ -5,32 +5,41 @@
   <div class="ui container">
     <div class="ui grid">
       <div class="four wide column">
-        <div class="ui vertical pointing menu">
+        <div class="ui vertical pointing menu width100">
+          <h4 class="item block header side-h">
+          {{ base.title }}
+          </h4>
           {% if base.children.len != 0 %}
-            {% if base == active %}
-              <a class="item">
-            {% else %}
-              <a class="item" href="{{ base.url }}">
-            {% endif %}
-            {{ base.title }}
-              </a>
-              <div class="menu">
-                {% for child in base.children %}
-                    {% if child == active %}
-                      <a class="item" href="javascript:void(0)">
+            {% for child in base.children %}
+              {% if child.children and child.children.len != 0 %}
+                {% if child == active %}
+                <div class="active item">
+                {% else %}
+                <div class="item">
+                {% endif %}
+                  {% if child == active %}
+                    <a class="side-ih" href="javascript:void(0)">{{ child.title }}</a>
+                  {% else %}
+                    <a class="side-ih" href="{{ child.url }}">{{ child.title }}</a>
+                  {% endif %}
+                  <div class="menu">
+                  {% for grand in child.children %}
+                    {% if grand == active %}
+                      <a class="active item" href="javascript:void(0)">{{ grand.title }}</a>
                     {% else %}
-                      <a class="item" href="{{ child.url }}">
+                      <a class="item" href="{{ grand.url }}">{{ grand.title }}</a>
                     {% endif %}
-                    {{ child.title }}
-                    </a>
-                {% endfor %}
-              </div>
-          {% else %}
-            {% if base == active %}
-              <a class="item" href="#">
-            {% else %}
-              <a class="item" href="{{ base.url }}">
-            {% endif %}
+                  {% endfor %}
+                  </div>
+                </div>
+              {% else %}
+                {% if child == active %}
+                  <a class="active item" href="javascript:void(0)">{{ child.title }}</a>
+                {% else %}
+                  <a class="item" href="{{ child.url }}">{{ child.title }}</a>
+                {% endif %}
+              {% endif %}
+            {% endfor %}
           {% endif %}
         </div>
       </div>

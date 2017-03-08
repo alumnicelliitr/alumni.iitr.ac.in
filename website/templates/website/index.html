@@ -21,7 +21,17 @@ Dean Of Alumni Affairs And International Relations
     <div class="ui container">
       <div class="carousel news-carousel">
       {% for news in mNews %}
-        <div class="carousel-cell news-cell"></div>
+        <div class="carousel-cell news-cell">
+          <div class="ui card">
+            <div class="content">
+              <a href='{{news.url}}' target='_blank' class="header">{{news.title}}</a>
+              <div class="meta">{{news.publish}}</div>
+              <div class="description">
+                <p>{{news.short_description}}</p>
+              </div>
+            </div>
+          </div>   
+        </div>
       {% endfor %}
       </div>
     </div>

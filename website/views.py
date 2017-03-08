@@ -47,6 +47,11 @@ def level(request,level0,level1 = None,level2 = None):
   print active.children
   print active
   print active.url
+  print base.children
+  print "yo"
+  for child in base.children:
+    print child
+    print "Chidl : "+str(len(child.children))
   context = {
     'mTabs':mTabs,
     'active':active,
