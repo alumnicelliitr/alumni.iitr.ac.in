@@ -70,7 +70,15 @@ Dean Of Alumni Affairs And International Relations
                   <div class="event-month">{{ event.event_date|date:"M" }}</div>
                 </div>
                 <div class="content">
-                  <div class="header">{{ event.title }}</div>
+                  <div class="header">
+                    {% if event.url %}
+                        <a href="{{ event.url }}">
+                        {{ event.title }}
+                        </a>
+                    {% else %}
+                        {{ event.title }}
+                    {% endif %}
+                  </div>
                   <div class="description">
                     <p>
                     {{ event.short_description }}
@@ -81,6 +89,39 @@ Dean Of Alumni Affairs And International Relations
               {% endfor %}
             </div>
           </div>
+
+          <h4 class="ui top attached block header">
+            Past Events
+          </h4>
+          <div class="bottom attached ui segment">
+            <div class="ui link items divided relaxed">
+              {% for event in mEventsPast %}
+              <div class="item">
+                <div class="ui tiny events-date">
+                  <div class="event-date">{{ event.event_date|date:"d" }}</div>
+                  <div class="event-month">{{ event.event_date|date:"M" }}</div>
+                </div>
+                <div class="content">
+                  <div class="header">
+                    {% if event.url %}
+                        <a href="{{ event.url }}">
+                        {{ event.title }}
+                        </a>
+                    {% else %}
+                        {{ event.title }}
+                    {% endif %}
+                  </div>
+                  <div class="description">
+                    <p>
+                    {{ event.short_description }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+
         </div>
       </div>
     </div>

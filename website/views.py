@@ -51,12 +51,14 @@ def level(request,level0,level1 = None,level2 = None):
 def index(request):
   mTabs = load_nodes(0,None)
   mEvents = Event.objects.filter(visibility=True,expiry_date__gte=datetime.date.today()).order_by('priority')
+  mEventsPast = Event.objects.filter(visibility=True,expiry_date__lte=datetime.date.today()).order_by('priority')
   mNews = News.objects.filter(visibility=True,expiry__gte=datetime.date.today()).order_by('priority')
   mLinks = Link.objects.filter(visibility=True).order_by('priority')
   mSlider = PhotoSlider.objects.filter(visibility=True).order_by('priority')
   context = {
     'mTabs':mTabs,
     'mEvents':mEvents,
+    'mEventsPast':mEventsPast,
     'mLinks':mLinks,
     'mNews':mNews,
     'mSlider':mSlider,
