@@ -43,13 +43,15 @@ html{
 
 .carousel-cell {
   margin-right: 10px;
-  background: #8C8;
+  background: #f3f4f5;
   border-radius: 5px;
   counter-increment: carousel-cell;
+  opacity:0.25;
 }
 
 .carousel-cell.is-selected {
-  background: #ED2;
+  background: #f3f4f5;
+  opacity:1;
 }
 
 /* cell number */
