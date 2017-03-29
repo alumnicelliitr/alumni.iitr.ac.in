@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from datetime import datetime
 from django.shortcuts import render,get_object_or_404
 from django.http import Http404, HttpResponseRedirect, HttpResponse
@@ -41,6 +41,8 @@ def level(request,level0,level1 = None,level2 = None):
   else:
     active = load_level(level2,2)
   base = load_level(level0,0)
+  if active == None:
+    return redirect('/')
   context = {
     'mTabs':mTabs,
     'active':active,
