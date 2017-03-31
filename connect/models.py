@@ -65,5 +65,5 @@ class Alumni(models.Model):
 	website = models.CharField(max_length=MC.TEXT_LENGTH)
 
 	class Meta:
-		db_table = 'nucleus_user'
+		db_table = 'nucleus_alumni'
 		app_label = 'channeli'
