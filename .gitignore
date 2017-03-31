@@ -1,3 +1,4 @@
+connect/migrations/*
 arc/settings.py
 website/migrations/*
 # Byte-compiled / optimized / DLL files
