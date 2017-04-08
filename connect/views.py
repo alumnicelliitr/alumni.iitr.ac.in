@@ -1,29 +1,31 @@
-from django.shortcuts import render,HttpResponse
+from django.shortcuts import render,HttpResponse,HttpResponseRedirect
 from connect.models import *
 # Create your views here.
 from django.views.decorators.csrf import csrf_exempt
+from django.db.models import Q
 
 def index(request):
 	user = User.objects.get(username='14114031')
-
 	context = {
 		'user' : user,
 		'is_logged_in' : True
 	}
 	return render(request,'connect/index.html',context)
 
-@csrf_exempt
-def node_api(request):
-    try:
-        #Get User from sessionid
-        session = Session.objects.get(session_key=request.POST.get('sessionid'))
-        user_id = session.get_decoded().get('_auth_user_id')
-        user = User.objects.get(id=user_id)
-        #Create comment
-        Comments.objects.create(user=user, text=request.POST.get('comment'))
-        #Once comment has been created post it to the chat channel
-        r = redis.StrictRedis(host='localhost', port=6379, db=0)
-        r.publish('chat', user.username + ': ' + request.POST.get('comment'))
-        return HttpResponse("Everything worked :)")
-    except Exception, e:
-        return HttpResponse(str(e))
+def chat(request,receiver = None):
+    if receiver == None:
+        # user = request.user
+        user = User.objects.get(username='14114031')
+        latest = Chat.objects.filter(user = user).order_by('-datetime_created')[0]
+        return HttpResponseRedirect('/chat/t/'+latest.other_user.username)
+    else:
+        user = User.objects.get(username='14114031')
+        latest = Chat.objects.filter(user = user).order_by('-datetime_created')[:10]
+        context = {
+            'active' : user,
+            'chat_users' : latest,
+        }
+        return render(request,'connect/chat.html',context)
+        #One highlighted user
+        #List of latest users on left
+        #If highlighted matches any on left. cool =D

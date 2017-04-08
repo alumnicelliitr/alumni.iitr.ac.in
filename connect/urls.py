@@ -18,5 +18,5 @@ from connect import views
 
 urlpatterns = [
 	url(r'^$', views.index),
-	url(r'chat/$',views.node_api)
+	url(r'chat/$',views.chat)
 ]

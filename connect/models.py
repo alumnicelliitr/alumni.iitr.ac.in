@@ -1,7 +1,6 @@
 from __future__ import unicode_literals
-
 from django.db import models
-from django.contrib.auth.models import AbstractUser, UserManager, Group
+from django.contrib.auth.models import AbstractUser
 import model_constants as MC
 from datetime import datetime
 
@@ -18,8 +17,9 @@ class User(AbstractUser,models.Model):
 			self.datetime_created = datetime.now()
 		super(User,self).save(*args,**kwargs)
 	class Meta:
+		managed = False
 		db_table = 'nucleus_user'
-		app_label = 'channeli'
+		app_label = 'connect'
 
 class Branch(models.Model):
 	code = models.CharField(max_length=MC.CODE_LENGTH, primary_key=True)
@@ -34,14 +34,16 @@ class Branch(models.Model):
 		return self.no_of_semesters
 
 	class Meta:
+		managed = False
 		verbose_name_plural = 'Branches'
 		db_table = 'nucleus_branch'
-		app_label = 'channeli'
+		app_label = 'connect'
 
 	def __unicode__(self):
 		return self.code + ':' + self.name + '(' + self.graduation + ')'
 
 class Student(models.Model):
+	user = models.OneToOneField(User, primary_key=True, parent_link=True)
 	datetime_created = models.DateTimeField(auto_now_add=True)
 	semester = models.CharField(max_length=10,blank=True,null=True)
 	semester_no = models.IntegerField()
@@ -51,19 +53,33 @@ class Student(models.Model):
 	bhawan = models.CharField(max_length=MC.CODE_LENGTH,choices=MC.BHAWAN_CHOICES, null=True, blank=True, default=None)
 	room_no = models.CharField(max_length=MC.CODE_LENGTH, blank=True,verbose_name='Room No')
 	passout_year = models.IntegerField(null=True, blank=True)
-	user = models.OneToOneField(User, primary_key=True, parent_link=True)
 	branch = models.ForeignKey(Branch)
 
 	class Meta:
+		managed = False
 		db_table = 'nucleus_student'
-		app_label = 'channeli'
+		app_label = 'connect'
 
 class Alumni(models.Model):
+	user = models.OneToOneField(User)
 	datetime_created = models.DateTimeField(auto_now_add=True)
-	student = models.ForeignKey(Student)
+	admission_year = models.IntegerField(verbose_name='Admission Year')
+	passout_year = models.IntegerField(null=True, blank=True)
+	branch = models.ForeignKey(Branch)
 	linked_in = models.CharField(max_length=MC.TEXT_LENGTH)
 	website = models.CharField(max_length=MC.TEXT_LENGTH)
 
 	class Meta:
-		db_table = 'nucleus_alumni'
-		app_label = 'channeli'
+		db_table = 'nucleus_arc_alumni'
+		app_label = 'connect'
+
+class Chat(models.Model):
+	sender = models.ForeignKey(User, related_name='sender')
+	receiver = models.ForeignKey(User, related_name='receiver')
+	message = models.CharField(max_length=1000)
+	datetime_created = models.DateTimeField(auto_now_add=True)
+	is_read = models.BooleanField(default=False)
+
+	class Meta:
+		db_table = 'nucleus_arc_chat'
+		app_label = 'connect'
