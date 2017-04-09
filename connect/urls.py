@@ -23,5 +23,5 @@ urlpatterns = [
   url(r'^logout/$', views.logout_view, name='logout'),
   url(r'^chat_request/$', views.chat_request_view),
   url(r'^chat_alumni/(?P<chat_ekey>[0-9a-zA-Z-_]+.{0,2})/$', views.chat_alumni),
-  url(r'^chat/$',views.chat)
+  url(r'^chat/(?P<rcvr>[0-9]{8})/$',views.chat)
 ]

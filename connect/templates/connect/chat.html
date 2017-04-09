@@ -1,46 +1,38 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Realtime Django</title>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js" type="text/javascript"></script>
-	<script src="http://localhost:4000/socket.io/socket.io.js"></script>
-	<script>
-		$(document).ready(function(){
-			var socket = io.connect('localhost', {port: 4000});
-			
-			socket.on('connect', function(){
-				console.log("connect");
-			});
-			
-			var entry_el = $('#comment');
-							 
-			socket.on('message', function(message) {
-				//Escape HTML characters
-				var data = message.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
-				
-				//Append message to the bottom of the list
-				$('#comments').append('<li>' + data + '</li>');
-				window.scrollBy(0, 10000000000);
-				entry_el.focus();
-			});
-										 
-			entry_el.keypress(function(event){
-				if(event.keyCode != 13) return;
-				var msg = entry_el.attr('value');
-				if(msg){
-					 socket.emit('send_message', msg, function(data){
-								console.log(data);
-					 });
-				
-				//Clear input value   
-				entry_el.attr('value', '');
-			 }
-			});
-		});
-	</script>
-</head>
-<body>
-		<input type="text" id="message" name="message" />
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block content %}
+{% load staticfiles %}
+<h1>{{ room.label }}</h1>
+<p>
+<label for="handle">Your name:</label>
+<input id="handle" type="text" placeholder="handle">
+</p>
+<form id="chatform">
+<table id="chat">
+<tbody>
+Hello {{user.name}}<br>
+You are chatting with {{receiver.name}}
+{% for message in messages %}
+<tr>
+<td>{{ message.datetime_created}}</td>
+<td>{{ message.handle }}</td>
+<td>{{ message.message }}</td>
+</tr> 
+{% endfor %}
+</tbody>
+<tfoot>
+<tr>
+<td>Say something:</td>
+<td colspan=2>
+<input id="message" type="text" placeholder="message">
+<button type="submit" id="go">Say it</button>
+</td>
+</tfoot>
+</table>
+</form>
+{% endblock content %}
+{% block afterbody %}
+<script type="text/javascript" src='{% static "/connect/js/jquery.js" %}'></script>
+<script type="text/javascript" src='{% static "/connect/js/jwebsockets.js" %}'></script>
+<script type="text/javascript" src='{% static "/connect/js/jchat.js" %}'></script>
+{% endblock afterbody %}

@@ -40,20 +40,20 @@ def index(request):
     }
   return render(request,'connect/index.html',{'form':form})
 
-def chat(request,receiver = None):
-    if receiver == None:
+#def chat(request,receiver = None):
+#    if receiver == None:
         # user = request.user
-        user = User.objects.get(username='14114031')
-        latest = Chat.objects.filter(user = user).order_by('-datetime_created')[0]
-        return HttpResponseRedirect('/chat/t/'+latest.other_user.username)
-    else:
-        user = User.objects.get(username='14114031')
-        latest = Chat.objects.filter(user = user).order_by('-datetime_created')[:10]
-        context = {
-            'active' : user,
-            'chat_users' : latest,
-        }
-        return render(request,'connect/chat.html',context)
+#        user = User.objects.get(username='14114031')
+#        latest = Chat.objects.filter(user = user).order_by('-datetime_created')[0]
+#        return HttpResponseRedirect('/chat/t/'+latest.other_user.username)
+#    else:
+#        user = User.objects.get(username='14114031')
+#        latest = Chat.objects.filter(user = user).order_by('-datetime_created')[:10]
+#        context = {
+#           'active' : user,
+#            'chat_users' : latest,
+#        }
+#        return render(request,'connect/chat.html',context)
         #One highlighted user
         #List of latest users on left
         #If highlighted matches any on left. cool =D
@@ -68,7 +68,9 @@ def chat_alumni(request, chat_ekey):
       print e
       return HttpResponse('Not a valid link')
     else:
-        return HttpResponse('Chat box for alumni:'+str(chat_request.receiver)+' by:'+str(chat_request.sender))
+        return redirect("/chat/" + chat_request.sender.username) 
+
+
 @csrf_exempt
 @login_required
 def chat_request_view(request):
@@ -87,3 +89,10 @@ def chat_request_view(request):
 #        return JsonResponse({"done":False, "message":"You have already requested from this alumni"})
     send_mail('Mail from alum portal', "You're requested to chat with "+student.user.name+" go to url : "+"http://192.168.121.187:6969/connect/chat_alumni/"+chat_request.ekey+"/", 'img@channeli.in', [alumni.email])
     return JsonResponse({"done":True, "message":"Email has been sent."})
+
+
+def chat(request,rcvr):
+  receiver = User.objects.get(username = rcvr)
+  user = request.user
+  messages= Chat.objects.filter(Q(sender = user, receiver = receiver) | Q(sender = receiver, receiver = user)).order_by('-datetime_created')[:30]
+  return render(request, 'connect/chat.html',{'messages':messages,'user':user,'receiver':receiver})
