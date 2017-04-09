@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from encrypted_id.models import EncryptedIDModel
 import model_constants as MC
 from datetime import datetime
 #from taggit.managers import TaggableManager
@@ -70,19 +71,29 @@ class Alumni(models.Model):
   linked_in = models.CharField(max_length=MC.TEXT_LENGTH)
   website = models.CharField(max_length=MC.TEXT_LENGTH)
   email = models.EmailField(max_length=150)
-# tags = TaggableManager()
+#tags = TaggableManager()
 
   class Meta:
     db_table = 'nucleus_arc_alumni'
     app_label = 'connect'
 
 class Chat(models.Model):
-  sender = models.ForeignKey(User, related_name='sender')
-  receiver = models.ForeignKey(User, related_name='receiver')
+  sender = models.ForeignKey(User, related_name='message_sender')
+  receiver = models.ForeignKey(User, related_name='message_receiver')
   message = models.CharField(max_length=1000)
   datetime_created = models.DateTimeField(auto_now_add=True)
   is_read = models.BooleanField(default=False)
 
   class Meta:
     db_table = 'nucleus_arc_chat'
+    app_label = 'connect'
+
+class ChatRequest(EncryptedIDModel):
+  sender = models.ForeignKey(User, related_name='request_sender')
+  receiver = models.ForeignKey(User, related_name='request_receiver')
+  datetime_created = models.DateTimeField(auto_now_add=True)
+
+
+  class Meta:
+    db_table = 'nucleus_arc_chat_request'
     app_label = 'connect'

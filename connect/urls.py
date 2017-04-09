@@ -15,8 +15,13 @@ Including another URLconf
 from django.conf.urls import include,url
 from django.contrib import admin
 from connect import views
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
 	url(r'^$', views.index),
-	url(r'chat/$',views.chat)
+  url(r'^login/$', auth_views.login, name='login'),
+  url(r'^logout/$', views.logout_view, name='logout'),
+  url(r'^chat_request/$', views.chat_request_view),
+  url(r'^chat_alumni/(?P<chat_ekey>[0-9a-zA-Z-_]+.{0,2})/$', views.chat_alumni),
+  url(r'^chat/$',views.chat)
 ]

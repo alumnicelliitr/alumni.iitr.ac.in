@@ -5,6 +5,7 @@
 <div>
 <h1 class="text-center">CONNECT WITH ALUMNI</h1>
 <div class="input-group search-big">
+  {{ request.user}}
   <!--input type="text" class="form-control" placeholder="Search here..." aria-describedby="basic-addon2">
   <span class="input-group-addon glyphicon glyphicon-search search-icon" id="basic-addon2"></span-->
   <form action = "" method = "post">
@@ -15,6 +16,20 @@
 {% for alumnus in alumni %}
 {{ alumnus }}
 {% endfor %}
+<script>
+function send_mail(alum_id){
+  $.ajax({
+    method:"POST",
+    url:'chat_request/',
+    data:{
+      "alumni_id":alum_id
+    },
+    success:function(res){
+      console.dir(res);
+    }
+  })
+}
+</script>
 </div>
 <h1 class="text-center"><small class="meta">Search for alumni by name, branch or year of passing</small>
 </div>

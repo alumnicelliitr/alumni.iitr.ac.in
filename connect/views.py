@@ -4,12 +4,17 @@ from connect.models import *
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Q
 from django.core.mail import send_mail
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import logout
 
 from .forms import SearchForm
 
+def logout_view(request):
+  logout(request)
+  return HttpResponseRedirect('/done')
 
+@login_required
 def index(request):
   if request.method == 'POST':
     form = SearchForm(request.POST)
@@ -53,8 +58,20 @@ def chat(request,receiver = None):
         #List of latest users on left
         #If highlighted matches any on left. cool =D
 
+@csrf_exempt
 @login_required
-def chat_request(request):
+def chat_alumni(request, chat_ekey):
+    print chat_ekey
+    try:
+        chat_request = ChatRequest.objects.get_by_ekey(chat_ekey)
+    except Exception as e:
+      print e
+      return HttpResponse('Not a valid link')
+    else:
+        return HttpResponse('Chat box for alumni:'+str(chat_request.receiver)+' by:'+str(chat_request.sender))
+@csrf_exempt
+@login_required
+def chat_request_view(request):
     try:
         student = Student.objects.get(user=request.user)
     except:
@@ -65,5 +82,8 @@ def chat_request(request):
     except:
         return JsonResponse({"done":False, "message":"Alumni with given id does not exist."})
 
-    send_mail(alumni.email, "You're requested to chat with "+student+" go to url : "+"")
+    chat_request, created = ChatRequest.objects.get_or_create(sender=request.user, receiver=alumni.user)
+#    if not created:
+#        return JsonResponse({"done":False, "message":"You have already requested from this alumni"})
+    send_mail('Mail from alum portal', "You're requested to chat with "+student.user.name+" go to url : "+"http://192.168.121.187:6969/connect/chat_alumni/"+chat_request.ekey+"/", 'img@channeli.in', [alumni.email])
     return JsonResponse({"done":True, "message":"Email has been sent."})
