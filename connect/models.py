@@ -3,7 +3,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 import model_constants as MC
 from datetime import datetime
-from taggit.managers import TaggableManager
+#from taggit.managers import TaggableManager
 
 # Create your models here.
 class User(AbstractUser,  models.Model):
@@ -70,7 +70,7 @@ class Alumni(models.Model):
   linked_in = models.CharField(max_length=MC.TEXT_LENGTH)
   website = models.CharField(max_length=MC.TEXT_LENGTH)
   email = models.EmailField(max_length=150)
-  tags = TaggableManager()
+# tags = TaggableManager()
 
   class Meta:
     db_table = 'nucleus_arc_alumni'

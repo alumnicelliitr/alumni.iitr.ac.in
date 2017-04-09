@@ -15,21 +15,24 @@ def index(request):
     form = SearchForm(request.POST)
     if form.is_valid():
       name = form.cleaned_data['name']
-      alumni = Alumni.objects.filter(user__name__contains = name)
+      branch = form.cleaned_data['branch']
+      batch = form.cleaned_data['batch']
+      tags = form.cleaned_data['tags']
+      alumni = Alumni.objects.filter(user__name__icontains = name, branch = branch, passout_year = batch, tags__name__in = tags)
       context = {
-        'alumni': alumni
+        'form': form,
+        'alumni': alumni,
       }
-      return render(request, 'connect/search.html', context)
+    else:
+      form = SearchForm()
+      context = {
+        'form': form
+      }
+    return render(request, 'connect/index.html', context)
   else:
     form = SearchForm()
     context = {
     }
-  '''
-  user = User.objects.get(username='14114031')
-  context = {
-    'user' : user,
-    'is_logged_in' : True
-  }'''
   return render(request,'connect/index.html',{'form':form})
 
 def chat(request,receiver = None):
