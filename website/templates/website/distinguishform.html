@@ -1,0 +1,49 @@
+{% extends 'website/base.html' %}
+
+{% block title %}
+Dean Of Alumni Affairs And International Relations
+{% endblock %}
+
+{% block content %}
+
+<section class="content">
+  <div class="ui container">
+    <div class="ui grid">
+      <div class="four wide column">
+        <div class="ui vertical pointing menu width100">
+          <h4 class="item block header side-h">
+          Distinguished Alumni Awards
+          </h4>
+            <div class="active item">
+              <div class="item">
+                Form
+              </div>
+            </div>
+        </div>
+      </div>
+
+      <div class="twelve wide column">
+        <h4 class="ui top attached block header">
+          Distinguished Alumni Awards - Form
+        </h4>
+        <div class="distinguishedForm">
+          <form method="post" action="" enctype="multipart/form-data" class="ui form">
+            {% csrf_token %}
+            {% for field in distinguishForm %}
+              <div class="field">
+                <label for="{{ field.auto_id }}">{{ field.label_tag }}
+                {% if field.field.required %}
+                    <span class="required">*</span>
+                {% endif %}
+                </label>
+                {{ field }}
+              </div>
+            {% endfor %}
+          <button class="distinguishedSubmit">Submit</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
