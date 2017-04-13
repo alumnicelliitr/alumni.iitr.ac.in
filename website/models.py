@@ -59,3 +59,28 @@ class PhotoSlider(models.Model):
   priority = models.IntegerField(default=0)
   def __str__(self):
     return self.title
+
+class DistinguishedAlumni(models.Model):
+  CATEGORY_CHOICES = (
+        ('Academic Research', 'Academic Research',),
+        ('Corporate Development/Adminstration/Entrepreneurship', 'Corporate Development/Adminstration/Entrepreneurship',),
+        ('Social Sciences/Engineering and Services/Public Adminstration', 'Social Sciences/Engineering and Services/Public Adminstration',),
+        ('Service to Society', 'Service to Society',),
+    )
+  name = models.CharField(max_length=100)
+  dob = models.DateField()
+  diploma = models.CharField(max_length=50)
+  year = models.IntegerField()
+  qualifications = models.TextField(null=True,blank=True)
+  address = models.TextField()
+  category = models.CharField(max_length=50,choices = CATEGORY_CHOICES)
+  description = models.TextField()
+  contribution = models.TextField()
+  photo = models.ImageField(blank=False,upload_to='website/media/distinguisted/images/')
+  resume = models.FileField(blank=False,upload_to='website/media/distinguisted/resumes/')
+  optional1 = models.FileField(blank=True,upload_to='website/media/distinguisted/optional/')
+  optional2 = models.FileField(blank=True,upload_to='website/media/distinguisted/optional/')
+  optional3 = models.FileField(blank=True,upload_to='website/media/distinguisted/optional/')
+
+  def __str__(self):
+    return self.name

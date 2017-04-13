@@ -3,6 +3,7 @@ from datetime import datetime
 from django.shortcuts import render,get_object_or_404
 from django.http import Http404, HttpResponseRedirect, HttpResponse
 from website.models import *
+from website.forms import *
 import calendar
 import datetime
 # Create your views here.
@@ -49,6 +50,29 @@ def level(request,level0,level1 = None,level2 = None):
     'base':base,
   }
   return render(request,'website/page.html',context)
+
+def distinguishedform(request):
+  if request.method == "POST":
+    distinguishForm = DistinguishForm(request.POST)
+    if distinguishForm.is_valid():
+      form = distinguishForm.save()
+      context = {
+        'success' : True
+      }
+      return render(request,'website/distinguishform.html',context)
+    else:
+      context = {
+        'distinguishForm' : distinguishForm,
+        'success' : False
+      }
+      return render(request,'website/distinguishform.html',context)
+  else:
+    distinguishForm = DistinguishForm()
+    context = {
+      'distinguishForm' : distinguishForm,
+      'success' : False
+    }
+  return render(request,'website/distinguishform.html',context)
 
 def index(request):
   mTabs = load_nodes(0,None)
