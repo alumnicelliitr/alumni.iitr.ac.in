@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Bootstrap Example</title>
+  <title>Search Results</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  <link rel="stylesheet" type="text/css" href="../../static/main.css">
+  <link rel="stylesheet" type="text/css" href="../static/main.css">
 </head>
 <body>
 
@@ -40,7 +40,7 @@
       </form-->
       <ul class="nav navbar-nav navbar-right">
         <li class="dropdown">
-          <a href="#" class="dropdown-toggle white white-links" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <span class="glyphicon glyphicon-user"></span> {{ user.name }}<span class="caret"></span></a>
+          <a href="#" class="dropdown-toggle white white-links" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <span class="glyphicon glyphicon-user"></span> {{user.name}}<span class="caret"></span></a>
           <ul class="dropdown-menu">
             <li><a href="https://channeli.in">Channeli</a></li>
             <li><a href="/connect/logout/">Logout</a></li>
@@ -51,54 +51,54 @@
   </div><!-- /.container-fluid -->
 </nav>
   
-<div class="container Aligner">
-  
-<div class="panel panel-default Aligner-item alumni-connect">
-  <div class="panel-heading">
-    <h2 class="panel-title"><b>Connect with Alumni</b></h2>
-  </div>
-  <div class="panel-body">
-    <form action = "/connect/" method = "post">
-      {% csrf_token %}
-      <div class="form-group col-xs-12">
-        <label>Name</label>
-        <input type="text" name="name" class="form-control" placeholder="Name">
+<div class="container">
+<h3>You searched for "{{query}}"</h3>
+
+{% for row in alumni %}
+<div class="panel panel-default search-result">
+  <div class="panel-body search-card">
+    <div class="container-fluid">
+      <div class="row row-eq-height">
+        <div class="col-xs-3 image-div">
+          <img src="{{row.user.photo}}" class="alumni-image">
+        </div>
+        <div class="col-xs-9 description-div">
+        <h4><b>{{row.user.name}}</b></h4>
+        <span style="float:left;" class="secondary-text">{{row.branch.name}} ({{row.admission_year}}-{{row.passout_year}})</span><!--span style="float:right;" class="secondary-text">Last active : 2 days ago</span-->
+        <br>
+        <hr>
+        <span>Related Activities :</span>
+        <span class="tags">Tags</span><span class="tags">Tags</span><span class="tags">Tags</span><span class="tags">Tags</span>
+        <br><br>
+        <!--span>Campus Activities :</span>
+        <span class="tags">Tags</span><span class="tags">Tags</span><span class="tags">Tags</span>
+        <br><br-->
+        <span style="float:left;"><a href="{{row.linked_in}}">linkedin</a>, <a href="{{row.website}}">website</a> </span><span style="float:right;"><a href="#" class="message-button" data='{{row.id}}'>Send Mail</a></span></span>
+        </div>
       </div>
-      <div class="form-group col-xs-6">
-        <label>Branch</label>
-        <select name = "branch" class="form-control">
-          {% for branch in branches %}
-            <option value = {{ branch.code }}>{{branch.name}}</option>
-          {% endfor %}
-        </select>
-      </div>
-      <div class="form-group col-xs-6">
-        <label>Batch</label>
-        <select name = "batch" class="form-control">
-          <option value = "2012">2012</option>
-          <option value = "2013">2013</option>
-          <option value = "2014">2014</option>
-          <option value = "2015">2015</option>
-          <option value = "2016">2016</option>
-          <option value = "2017">2017</option>
-        </select>
-      </div>
-      <div class="form-group col-xs-12">
-        <label>Tags</label>
-        <input type="text" class="form-control" placeholder="Type Tags . . ." data-role="tagsinput">
-      </div>
-      <!-- <div class="form-group col-xs-12">
-        <label>Campus Activities</label>
-        <input type="email" class="form-control" placeholder="Type Campus Activities . . ." data-role="tagsinput">
-      </div> -->
-      <div class="col-xs-12"><p class="help-block">Note : Fill all or atleast one field(s).</p></div>
-      <div class="col-xs-12 text-center">
-        <button type="submit" class="btn btn-default">Submit</button>
-      </div>
-    </form>
+    </div>
   </div>
 </div>
+{% endfor %}
 
+<!-- modal -->
+<div class="modal fade" id="success" role="dialog">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Mail Sent!</h4>
+      </div>
+      <div class="modal-body">
+        <p>Mail sent successfully.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript" src='../../static/connect/js/search-results.js'></script>
 
 </div>
 

@@ -19,9 +19,12 @@ from django.contrib.auth import views as auth_views
 
 urlpatterns = [
 	url(r'^$', views.index),
-  url(r'^login/$', auth_views.login, name='login'),
+  url(r'^login/$', auth_views.login,{'template_name':'connect/login.html'}),
   url(r'^logout/$', views.logout_view, name='logout'),
   url(r'^chat_request/$', views.chat_request_view),
   url(r'^chat_alumni/(?P<chat_ekey>[0-9a-zA-Z-_]+.{0,2})/$', views.chat_alumni),
-  url(r'^chat/(?P<rcvr>[0-9]{8})/$',views.chat)
+  url(r'^messages/(?P<rcvr>[0-9]{8})/$',views.messages),
+  url(r'^student_chat/$',views.student_chat),
+  url(r'^chat_list/$',views.chat_list),
+  url(r'^chat_user_list/$', views.chat_user_list)
 ]

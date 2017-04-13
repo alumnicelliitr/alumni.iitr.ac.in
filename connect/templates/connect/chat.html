@@ -1,38 +1,153 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Bootstrap Example</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="../../static/main.css">
+</head>
+<body>
 
-{% block content %}
-{% load staticfiles %}
-<h1>{{ room.label }}</h1>
-<p>
-<label for="handle">Your name:</label>
-<input id="handle" type="text" placeholder="handle">
-</p>
-<form id="chatform">
-<table id="chat">
-<tbody>
-Hello {{user.name}}<br>
-You are chatting with {{receiver.name}}
-{% for message in messages %}
-<tr>
-<td>{{ message.datetime_created}}</td>
-<td>{{ message.handle }}</td>
-<td>{{ message.message }}</td>
-</tr> 
-{% endfor %}
-</tbody>
-<tfoot>
-<tr>
-<td>Say something:</td>
-<td colspan=2>
-<input id="message" type="text" placeholder="message">
-<button type="submit" id="go">Say it</button>
-</td>
-</tfoot>
-</table>
-</form>
-{% endblock content %}
-{% block afterbody %}
-<script type="text/javascript" src='{% static "/connect/js/jquery.js" %}'></script>
-<script type="text/javascript" src='{% static "/connect/js/jwebsockets.js" %}'></script>
-<script type="text/javascript" src='{% static "/connect/js/jchat.js" %}'></script>
-{% endblock afterbody %}
+	<nav class="navbar navbar-default">
+		<div class="container-fluid">
+			<!-- Brand and toggle get grouped for better mobile display -->
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand white" href="/"><b>Alumni Relations Cell</b></a>
+			</div>
+
+			<!-- Collect the nav links, forms, and other content for toggling -->
+			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+				<ul class="nav navbar-nav">
+					<li><a href="/connect/student_chat/" class="white white-links">Recent Chats</a></li>
+					<li><a href="/connect/" class="white white-links">Alumni Connect</a></li>
+				</ul>
+				<!-- <form class="navbar-form navbar-left">
+					<div class="input-group">
+						<div class="form-group">
+							<input type="text" class="form-control" id="search-bar" placeholder="Search Alumni by name . . .">
+						</div>
+						<button type="submit" class="btn btn-default" id="search-button"><span class="glyphicon glyphicon-search"></span></button>
+					</div>
+				</form> -->
+				<ul class="nav navbar-nav navbar-right">
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle white white-links" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <span class="glyphicon glyphicon-user"></span> {{user.name}} <span class="caret"></span></a>
+						<ul class="dropdown-menu">
+							<li><a href="https://channeli.in">Channeli</a></li>
+							<li><a href="/connect/logout/">Logout</a></li>
+						</ul>
+					</li>
+				</ul>
+			</div><!-- /.navbar-collapse -->
+		</div><!-- /.container-fluid -->
+	</nav>
+
+	<div class="container chat-container">
+
+		<div class="chat-panel-parent">
+			<div class="chat-row">
+				<div class="chat-recent no-pad">
+					<div class="panel panel-default m-b-zero chat-panel-child">
+						<div class="panel-heading">
+							<h3 class="panel-title">Recent chats</h3>
+						</div>
+						<div class="panel-body">
+							<div class="chat-list">	
+								<div class="alumni-name">
+									<span><a href="#" class="alumni-name-chat">Sundar Pichai</a></span>
+								</div>
+								<div class="alumni-name">
+									<span><a href="#" class="alumni-name-chat">Sundar Pichai</a></span>
+								</div>
+								<div class="alumni-name">
+									<span><a href="#" class="alumni-name-chat">Sundar Pichai</a></span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="chat-main no-pad">
+					<div class="panel panel-default m-b-zero chat-panel-child pos-rel">
+						<div class="panel-heading">
+							<h3 class="panel-title">
+								Sundar Pichai
+							</h3>
+						</div>
+						<div class="panel-body chat-messages">
+									<div class="sent-message">
+										Lorem ipsum dolor sit amet   Lorem ipsum dolor sit amet  Lorem ipsum dolor sit amet  Lorem ipsum dolor sit amet 
+									</div>
+									<div class="received-message">
+										Lorem ipsum dolor sit amet  Lorem ipsum dolor sit amet  Lorem ipsum dolor sit amet  Lorem ipsum dolor sit amet  Lorem ipsum dolor sit amet  Lorem ipsum dolor sit amet  Lorem ipsum dolor sit amet  Lorem ipsum dolor sit amet  Lorem ipsum dolor sit amet 
+									</div>
+									<div class="sent-message">
+										Lorem ipsum dolor sit amet   Lorem ipsum dolor sit amet  Lorem ipsum dolor sit amet  Lorem ipsum dolor sit amet 
+									</div>
+									<div class="received-message">
+										Lorem ipsum dolor sit amet  Lorem ipsum dolor sit amet  Lorem ipsum dolor sit amet  Lorem ipsum dolor sit amet  Lorem ipsum dolor sit amet  Lorem ipsum dolor sit amet  Lorem ipsum dolor sit amet  Lorem ipsum dolor sit amet  Lorem ipsum dolor sit amet 
+									</div>
+									<div class="sent-message">
+										Lorem ipsum dolor sit amet   Lorem ipsum dolor sit amet  Lorem ipsum dolor sit amet  Lorem ipsum dolor sit amet 
+									</div>
+									<div class="received-message">
+										Lorem ipsum dolor sit amet  Lorem ipsum dolor sit amet  Lorem ipsum dolor sit amet  Lorem ipsum dolor sit amet  Lorem ipsum dolor sit amet  Lorem ipsum dolor sit amet  Lorem ipsum dolor sit amet  Lorem ipsum dolor sit amet  Lorem ipsum dolor sit amet 
+									</div>
+									<div class="sent-message">
+										Lorem ipsum dolor sit amet   Lorem ipsum dolor sit amet  Lorem ipsum dolor sit amet  Lorem ipsum dolor sit amet 
+									</div>
+									<div class="received-message">
+										Lorem ipsum dolor sit amet  Lorem ipsum dolor sit amet  Lorem ipsum dolor sit amet  Lorem ipsum dolor sit amet  Lorem ipsum dolor sit amet  Lorem ipsum dolor sit amet  Lorem ipsum dolor sit amet  Lorem ipsum dolor sit amet  Lorem ipsum dolor sit amet 
+									</div>
+						</div>
+						<div class="panel-footer chat-message-div">
+							<form id='send-message-form'>
+								<div class="input-group">
+									<div class="chat-form-group">
+										<input type="text" class="form-control" id="message-bar" placeholder="Message . . .">
+									</div>
+									<button type="submit" class="btn btn-default" id="message-button"><span class="glyphicon glyphicon-send"></span></button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+				<div class="chat-user no-pad">
+					<div class="row" style="text-align:center;">
+						<div class="col-xs-12">
+							<img src="https://pbs.twimg.com/profile_images/481231649128980480/9hpv14pc.jpeg" style="border-radius:50%;width:220px;height:220px;">    
+						</div>
+						<div class="col-xs-12">
+							<h4><b>Sundar</b></h4>
+							<p class="secondary-text">Metallurgical and Material Science</p>
+							<p class="secondary-text">(2012-2014)</p>
+							<hr>
+							<br>
+							<span>Related Activities :</span>
+							<span class="tags">Tags</span><span class="tags">Tags</span><span class="tags">Tags</span><span class="tags">Tags</span>
+							<br><br>
+							<span>Campus Activities :</span>
+							<span class="tags">Tags</span><span class="tags">Tags</span><span class="tags">Tags</span>
+							<br><br>
+							<a href="#">linkedin</a> , <a href="#">facebook</a> , <a href="#">gmail</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script>
+		window.enrollment_no = {{user.username}}
+	</script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src='../../static/connect/js/main.js'></script>
+	<script type="text/javascript" src='../../static/connect/js/chat.js'></script>
+</body>
+</html>

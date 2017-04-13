@@ -1,0 +1,296 @@
+/*div.input-group{
+	display: block;
+}
+input.form-control{
+	border: none;
+	width: 364px !important;
+}
+button.btn.btn-default.search-button{
+	border:none;
+	padding: 7px;
+	width: 64px;
+}*/
+
+.row-eq-height {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+/********SEARCH IN NAVBAR*******/
+
+#search-bar {
+	border-radius: 4px 0px 0px 4px;
+	border: none;
+	padding: 15px;
+	width: 264px;
+}
+
+#search-button {
+	border: none;
+	border-radius: 0px 4px 4px 0px;
+	padding: 7px 14px 7px 14px;
+
+}
+
+/***************/
+#message-bar {
+	border-radius: 4px 0px 0px 4px;
+	border: none;
+	padding: 15px;
+	width: 90%;
+}
+
+#message-button {
+	border: none;
+	border-radius: 0px 4px 4px 0px;
+	padding: 7px 14px 7px 14px;
+	width: 10%;
+}
+
+/******* NAVBAR ********/
+
+nav.navbar.navbar-default {
+	background-color: #4FC3F7;
+	box-shadow: 0px 5px 15px #E0E0E0;
+	border-radius: 0;
+}
+.white {
+	color: white !important;
+}
+.white-links:hover {
+	color: #EEEEEE !important;
+}
+li.dropdown.open > a.dropdown-toggle.white.white-links {
+	background-color: #29B6F6;
+}
+
+/***************/
+
+body, html{
+	height: 100%;
+	background-color: #F5F5F5;
+}
+
+input, select {
+	box-shadow: none !important;
+}
+
+.Aligner {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: calc(95vh - 72px);
+}
+
+.Aligner-item {
+	max-width: 60%;
+}
+
+div.panel.panel-default.alumni-connect {
+	border-radius: 0;
+	box-shadow: 0px 0px 50px #E0E0E0;
+	border: none;
+}
+
+h2.panel-title {
+	padding: 10px;
+	padding-left: 14px;
+	text-align: center;
+	font-size: 16px;
+}
+
+img.alumni-image {
+	width: 100%;
+	height: 100%;
+}
+
+.search-card {
+	padding: 0px;
+}
+
+.image-div{
+	padding: 0px;
+}
+
+.description-div {
+	padding: 15px;
+	height: 100%;
+}
+
+.tags {
+	background-color: #E0E0E0;
+	border-radius: 2px;
+	padding: 5px 10px 5px 10px;
+	color: #616161;
+	font-weight: 600;
+	margin-left: 5px;
+}
+
+.message-button{
+	background-color: #4FC3F7; 
+	padding: 7px 20px 7px 20px;
+	color: white;
+	border-radius: 4px;
+}
+
+.message-button:hover {
+	text-decoration: none;
+	background-color: #29B6F6;
+	color: white;
+}
+
+.secondary-text {
+	color: #9E9E9E;
+	font-weight: 500;
+}
+
+.search-result , .alumni-connect {
+	border-radius: 0;
+	border: none;
+	box-shadow: 0px 0px 30px #E0E0E0;
+}
+
+.chat-container {
+	width: 80%;
+	height: calc( 100% - 100px);
+	position: relative;
+}
+
+.chat-panel-parent {
+	background-color: #fff;
+	border-radius: 0;
+	border: none;
+	box-shadow: 0px 0px 30px #E0E0E0;
+	height: 100%;
+}
+
+.chat-panel-child {
+	height: 100%;
+}
+
+.chat-panel-body {
+	padding: 0px 15px 0px 15px; 
+}
+
+.no-pad {
+	padding: 0px;
+}
+
+.m-b-zero {
+	margin-bottom: 0px;
+}
+
+.unread-messages {
+	background-color: #00E676;
+	border-radius: 50%;
+	padding: 0px 6px;
+	color: white;
+	font-weight: 600;
+	margin-right: 10px;
+}
+
+.last-active-recent-chats {
+	font-weight: 300;
+	color: #9E9E9E;
+}
+
+.online {
+	font-weight: 300;
+	color: #00E676;
+}
+
+.alumni-name {
+	padding: 24px 12px;
+	border-bottom: 1px solid #E0E0E0;
+}
+
+.alumni-name-chat {
+	text-decoration: none;
+	cursor: pointer;
+}
+
+a.alumni-name-chat:hover {
+	text-decoration: none;
+}
+
+.input-group {
+	width: 100%;
+}
+
+.chat-form-group {
+	margin-bottom: 0;
+}
+
+.sent-message {
+	background-color: #EEEEEE;
+	padding: 10px;
+	border-radius: 4px;
+	max-width: 60%;
+	margin-top: 20px;
+	align-self: flex-end;
+	/*display: inline-block;*/
+}
+
+.received-message {
+	background-color: #FAFAFA;
+	padding: 10px;
+	border-radius: 4px;
+	max-width: 60%;
+	align-self: flex-start;
+	margin-top: 20px;
+	/*display: inline-block;*/
+}
+
+.chat-row{
+	display: flex;
+	justify-content: space-between;
+	position: relative;
+	height: 100%;
+}
+.chat-recent, .chat-user{
+	width: 25%;
+	display: inline-block;
+	min-height: 100%;
+	border:none;
+}
+.chat-user{
+	padding: 32px 0;
+}
+.chat-main{
+	width:50%;
+	display: inline-block;
+	max-height: 100%;
+	min-height: 100%;
+}
+
+.chat-row .panel{
+	border-radius: 0;
+}
+.chat-message-div{
+	position: absolute;
+	width: 100%;
+	left: 0;
+	right: 0;
+	bottom: 0;
+}
+.pos-rel{
+	position: relative;
+}
+.chat-messages{
+	display: flex;
+	flex-direction: column-reverse;
+	height: calc(100% - 94px);
+    overflow: auto;
+}
+.all-messages{
+}
+
+.Login {
+	width: 320px;
+}
+
+button.login-button {
+	background-color: #4FC3F7;
+}

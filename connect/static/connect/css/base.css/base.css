@@ -1,0 +1,173 @@
+*{
+	margin: 0;
+	padding: 0;
+}
+
+html{
+	height: 100%;
+}
+
+body{
+	height: 100%;
+	background-color: #F8F8F8;
+}
+
+.profile-pic img{
+	/*height: 30px;*/
+	width: 40px;
+	padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.cont{
+	display: flex;
+    align-items: center;
+    justify-content: center;
+	height: 90%;
+	/*width: 1000px;*/
+	padding-bottom: 150px;
+}
+
+.cont.feed{
+	display: block;
+	width:800px;
+	margin: auto;
+	padding-left: 0;
+}
+
+.cont h1{
+	margin-bottom: 40px;
+}
+
+.navbar{
+	font-size: x-large;
+	padding: 10px;
+	background-color: #71C3F1;
+}
+
+.navbar-brand{
+	font-size: x-large;
+}
+
+.header-text{
+	color: #fff !important;
+}
+
+.search-big{
+	max-width: 800px;
+}
+
+.search-big input{
+	font-size: 24px;
+    height: inherit;
+    padding: 20px;
+    padding-left: 40px;
+    border-right: 0;
+}
+
+.search-med{
+	max-width: 800px;
+}
+
+.search-med input{
+	font-size: 24px;
+    height: inherit;
+    /*padding: 20px;*/
+    padding-left: 40px;
+    border-right: 0;
+}
+
+.search-icon{
+	font-size: 24px;
+	background: white;
+    top: 0;
+    color: #C0C0C0;
+}
+
+.meta{
+	color: #C0C0C0;
+}
+
+h1{
+	color: #404040;
+}
+
+.navbar-nav.navbar-center {
+    position: absolute;
+    left: 50%;
+    transform: translatex(-50%);
+}
+
+.cont .card {
+	display: block;
+	width: 800px;
+	/*box-shadow: 2px 2px 2px 2px rgba(128,128,128,0.2);*/
+	border: 1px solid rgba(128,128,128,0.3);
+	margin-bottom: 20px;
+}
+
+.cont .card-block{
+	display: inline;
+	padding-right: 10px;
+}
+
+.cont .card-block div{
+	padding-right: 15px;
+}
+
+.card img{
+	float: left;
+	margin-right: 10px;
+	height: 228px;
+	width: 228px
+}
+
+.card h4{
+	display: inline;
+	padding-top: 24px;
+	padding-bottom: 24px;
+}
+
+.message-btn{
+	float: right;
+}
+
+.label{
+	margin:5px;
+	padding-top: 8px;
+	padding-bottom: 8px;
+	font-size: 16px;
+	font-weight: normal;
+	color: #777;
+	background-color: rgba(128,128,128,0.3);
+}
+
+.tags-list{
+	margin-top: 24px;
+	margin-bottom: 24px;
+}
+
+.float-right{
+	float: right;
+}
+
+.card-text{
+	margin-top: 15px;
+}
+
+a{
+	color: #71C3F1;
+}
+
+.btn-primary{
+	background-color: #71C3F1;
+	border: 0;
+}
+
+.btn-primary:hover{
+	background-color: #42A8E1;
+}
+
+.clear{
+    clear:both;
+}

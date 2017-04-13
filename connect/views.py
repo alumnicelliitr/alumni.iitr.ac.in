@@ -1,5 +1,7 @@
 from django.shortcuts import render,HttpResponse,HttpResponseRedirect
 from connect.models import *
+from django.core import serializers
+
 # Create your views here.
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Q
@@ -7,6 +9,8 @@ from django.core.mail import send_mail
 from django.http import JsonResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
+import model_constants as MC
+import json
 
 from .forms import SearchForm
 
@@ -17,6 +21,20 @@ def logout_view(request):
 @login_required
 def index(request):
   if request.method == 'POST':
+    name = request.POST.get("name")
+    branch = request.POST.get("branch")
+    batch = request.POST.get("batch")
+    query = name + "," + branch + "," + batch
+    alumni = Alumni.objects.filter(user__name__icontains = name, branch = branch, passout_year = batch)
+    context = {
+      'query': query,
+      'alumni': alumni,
+    }
+    return render(request, 'connect/search-results.html', context)
+  else:
+    branches = Branch.objects.all()
+    return render(request, 'connect/index.html', {'branches': branches})
+  '''
     form = SearchForm(request.POST)
     if form.is_valid():
       name = form.cleaned_data['name']
@@ -28,17 +46,18 @@ def index(request):
         'form': form,
         'alumni': alumni,
       }
+      return render(request, 'connect/search-results.html', context)
     else:
       form = SearchForm()
       context = {
         'form': form
       }
-    return render(request, 'connect/index.html', context)
+      return render(request, 'connect/index.html', {'form':form})
   else:
     form = SearchForm()
     context = {
     }
-  return render(request,'connect/index.html',{'form':form})
+  return render(request,'connect/index.html',{'form':form})'''
 
 #def chat(request,receiver = None):
 #    if receiver == None:
@@ -91,8 +110,53 @@ def chat_request_view(request):
     return JsonResponse({"done":True, "message":"Email has been sent."})
 
 
-def chat(request,rcvr):
+def messages(request,rcvr):
   receiver = User.objects.get(username = rcvr)
   user = request.user
   messages= Chat.objects.filter(Q(sender = user, receiver = receiver) | Q(sender = receiver, receiver = user)).order_by('-datetime_created')[:30]
   return render(request, 'connect/chat.html',{'messages':messages,'user':user,'receiver':receiver})
+
+@login_required
+def student_chat(request):
+  user = request.user
+  return render(request, 'connect/chat.html')
+
+@csrf_exempt
+def chat_list(request):
+  alumni_id = request.POST.get("alumni_id")
+  student_id = request.POST.get("student_id")
+  alumni_user = User.objects.get(username = alumni_id)
+  student_user = User.objects.get(username = student_id)
+  try:
+    messages = Chat.objects.filter(Q(sender = student_user, receiver = alumni_user) | Q(sender = alumni_user, receiver = student_user)).order_by('-datetime_created')
+    message = serializers.serialize('json', messages, fields=('message','sender','receiver'))
+  except:
+    messages = []
+  return JsonResponse(message,safe=False)
+
+@csrf_exempt
+def chat_user_list(request):
+  user = User.objects.get(username=request.POST.get("enrollment_no"))
+  chats = Chat.objects.filter(Q(sender = user) | Q(receiver = user))
+  users = map(lambda chat: chat.sender if chat.receiver == user else chat.receiver, chats)
+  users_set = set(users)
+  users_list = list(users_set)
+  print users_list
+  data = []
+  for user in users_list:
+    try:
+      alumnus = Alumni.objects.get(user = user)
+      if alumnus:
+        element = {"id":user.id, "username":user.username, "name":user.name, "photo": user.photo, "branch":alumnus.branch.name, "admission_year":alumnus.admission_year, "passout_year":alumnus.passout_year,"type":"alumnus"}
+    except:
+      pass
+    try:
+      student = Student.objects.get(user = user)
+      if student:
+        element = {"id":user.id, "username":user.username, "name":user.name, "photo": user.photo, "branch":student.branch.name, "admission_year":student.admission_year, "bhawan":student.bhawan,"type":"student"}
+    except:
+      pass
+    data.append(element)
+  return JsonResponse(data, safe=False)
+
+
