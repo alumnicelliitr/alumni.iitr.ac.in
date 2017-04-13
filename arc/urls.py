@@ -24,6 +24,6 @@ urlpatterns = [
     url(r'^@dm!nstr@t0r/', admin.site.urls),
     #url(r'^admin',admin.site.urls),
     #url(r'^admin/', admin.site.urls),
-    #url(r'^connect/',include(connect_urls)),
-    #url(r'^',include(website_urls)),
+    url(r'^connect/',include(connect_urls)),
+    url(r'^',include(website_urls)),
 ] + static.static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
