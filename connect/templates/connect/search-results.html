@@ -21,7 +21,9 @@ Search Results -
         <br>
         <hr>
         <span>Related Activities :</span>
-        <span class="tags">Tags</span><span class="tags">Tags</span><span class="tags">Tags</span><span class="tags">Tags</span>
+        {% for tag in row.tags.names %}
+          <span class="tags">{{tag}}</span>
+        {% endfor %}
         <br><br>
         <!--span>Campus Activities :</span>
         <span class="tags">Tags</span><span class="tags">Tags</span><span class="tags">Tags</span>
