@@ -45,7 +45,7 @@ def advanced(request):
         query.append(branch)
       if batch:
         alumni = alumni.filter(passout_year = batch)
-        query.append(batch)
+        query.append(str(batch))
       if tags:
         alumni = alumni.filter(tags__name__in = tags).distinct()
         query.append(' '.join(tags))
