@@ -61,20 +61,22 @@
 	$('#send-message-form').submit(function(e) {
 		e.preventDefault();
 		var message = $('#message-bar').val();
-		// $.ajax({
-		//     method:"POST",
-		//     url: BASE + 'chat_user_list/',
-		//     data: {
-		// 		'enrollment_no' : enrollment_no
-		// 	},
-		//     success:function(res){
-		//     	console.log(res)
-		//     	if(res.done){
-		    		
-		//     	}
-		//     }
-	 //  	});
-	  	$('#message-bar').val('')
+		$.ajax({
+		    method:"POST",
+		    url: '/connect/message/',
+		    data: {
+        'target' : enrollment_no,
+        'message' : message
+		   	},
+		    success:function(res){
+          if(res == 'success')
+          {
+	  	      $('#message-bar').val('');
+            message = '<div class="sent-message">' + message + '</div>';
+            $('.chat-messages').prepend(message);
+          }
+		    }
+	  	});
 	});
 
 	$('.chat-list').on('click', '.alumni-name-chat', function(){

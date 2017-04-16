@@ -1,4 +1,4 @@
-from django.shortcuts import render,HttpResponse,HttpResponseRedirect
+from django.shortcuts import render,HttpResponse,HttpResponseRedirect,redirect
 from connect.models import *
 from django.core import serializers
 
@@ -8,7 +8,7 @@ from django.db.models import Q
 from django.core.mail import send_mail
 from django.http import JsonResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import logout
+from django.contrib.auth import authenticate,login,logout
 import model_constants as MC
 import json
 
@@ -93,16 +93,24 @@ def ajax_tag_search(request):
         #If highlighted matches any on left. cool =D
 
 @csrf_exempt
-@login_required
 def chat_alumni(request, chat_ekey):
-    print chat_ekey
     try:
-        chat_request = ChatRequest.objects.get_by_ekey(chat_ekey)
+      chat_request = ChatRequest.objects.get_by_ekey(chat_ekey)
+      if request.user:
+        logout(request)
+      owner = chat_request.receiver
+      user = authenticate(username=owner.username,password='helloiitr')
+      if user is not None:
+        if user.is_active:
+          login(request,user)
+          return redirect("/connect/student_chat/" + chat_request.sender.username)
+        else:
+          redirect("/")
+      else:
+        redirect("/")
     except Exception as e:
       print e
       return HttpResponse('Not a valid link')
-    else:
-        return redirect("/chat/" + chat_request.sender.username) 
 
 
 @csrf_exempt
@@ -124,6 +132,22 @@ def chat_request_view(request):
     send_mail('Mail from alum portal', "You're requested to chat with "+student.user.name+" go to url : "+"http://192.168.121.187:6969/connect/chat_alumni/"+chat_request.ekey+"/", 'img@channeli.in', [alumni.email])
     return JsonResponse({"done":True, "message":"Email has been sent."})
 
+@csrf_exempt
+@login_required
+def add_message(request):
+  try:
+    sender = request.user
+    receiver = User.objects.get(username=request.POST.get('target',''))
+    message = request.POST.get('message','')
+    c = Chat.objects.create(sender = sender, receiver = receiver, message = message)
+    c.save()
+    chat_request, created = ChatRequest.objects.get_or_create(sender=sender, receiver=alumni.user)
+    if created:
+      send_mail('Mail from alum portal', "You're requested to chat with "+sender.name+". Go to the URL : "+"http://192.168.121.187:63000/connect/chat_alumni/"+chat_request.ekey+"/", 'img@channeli.in', ['nikhilsheoran96@gmail.com']) #alumni.email])
+    return HttpResponse('success')
+  except Exception as e:
+    print e
+    return HttpResponse('error')
 
 def messages(request,rcvr):
   receiver = User.objects.get(username = rcvr)
@@ -132,9 +156,44 @@ def messages(request,rcvr):
   return render(request, 'connect/chat.html',{'messages':messages,'user':user,'receiver':receiver})
 
 @login_required
-def student_chat(request):
-  user = request.user
-  return render(request, 'connect/chat.html')
+def student_chat(request,target = None):
+  if target == None:
+    user = request.user
+    try:
+      messages = Chat.objects.filter(Q(sender = user) | Q(receiver = user)).order_by('-datetime_created')[0]
+      receiver = messages.receiver.username if (messages.sender == user) else messages.sender.username
+      return redirect('/connect/student_chat/'+receiver)
+    except Exception as e:
+      print e
+      #Person hasn't chatted with anyone and is opening /student_chat/
+      context = {
+        'empty': True,
+        'user' : user,
+      }
+      return render(request,'connect/chat.html',context)
+  else:
+    user = request.user
+    messageList = Chat.objects.filter(Q(sender = user) | Q(receiver = user)).order_by('-datetime_created')
+    userList = []
+    for message in messageList:
+      if message.sender == user and message.receiver not in userList:
+        userList.append(message.receiver)
+      elif message.receiver == user and message.sender not in userList:
+        userList.append(message.sender)
+    target = User.objects.get(username=target)
+    messages = Chat.objects.filter(Q(sender = user, receiver = target) | Q(receiver = user, sender = target)).order_by('-datetime_created')
+    first = False
+    if(len(messages) == 0):
+      first = True
+    context = {
+    'empty' : False,
+    'first' : first,
+    'messages' : messages,
+    'user' : user,
+    'target' : target,
+    'userList' : userList
+    }
+  return render(request, 'connect/chat.html',context)
 
 @csrf_exempt
 def chat_list(request):

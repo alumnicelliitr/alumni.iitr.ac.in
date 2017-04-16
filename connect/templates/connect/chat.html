@@ -1,55 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<title>Bootstrap Example</title>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" href="../../static/main.css">
-</head>
-<body>
-
-	<nav class="navbar navbar-default">
-		<div class="container-fluid">
-			<!-- Brand and toggle get grouped for better mobile display -->
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-					<span class="sr-only">Toggle navigation</span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-				</button>
-				<a class="navbar-brand white" href="/"><b>Alumni Relations Cell</b></a>
-			</div>
-
-			<!-- Collect the nav links, forms, and other content for toggling -->
-			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-				<ul class="nav navbar-nav">
-					<li><a href="/connect/student_chat/" class="white white-links">Recent Chats</a></li>
-					<li><a href="/connect/" class="white white-links">Alumni Connect</a></li>
-				</ul>
-				<!-- <form class="navbar-form navbar-left">
-					<div class="input-group">
-						<div class="form-group">
-							<input type="text" class="form-control" id="search-bar" placeholder="Search Alumni by name . . .">
-						</div>
-						<button type="submit" class="btn btn-default" id="search-button"><span class="glyphicon glyphicon-search"></span></button>
-					</div>
-				</form> -->
-				<ul class="nav navbar-nav navbar-right">
-					<li class="dropdown">
-						<a href="#" class="dropdown-toggle white white-links" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <span class="glyphicon glyphicon-user"></span> {{user.name}} <span class="caret"></span></a>
-						<ul class="dropdown-menu">
-							<li><a href="https://channeli.in">Channeli</a></li>
-							<li><a href="/connect/logout/">Logout</a></li>
-						</ul>
-					</li>
-				</ul>
-			</div><!-- /.navbar-collapse -->
-		</div><!-- /.container-fluid -->
-	</nav>
-
-	<div class="container chat-container">
+{% extends 'connect/base.html' %}
+{% block title %}
+Chat -
+{% endblock %}
+{% block content %}
+<div class="container chat-container">
 
 		<div class="chat-panel-parent">
 			<div class="chat-row">
@@ -59,16 +13,22 @@
 							<h3 class="panel-title">Recent chats</h3>
 						</div>
 						<div class="panel-body">
-							<div class="chat-list">	
-								<div class="alumni-name">
-									<span><a href="#" class="alumni-name-chat">Sundar Pichai</a></span>
-								</div>
-								<div class="alumni-name">
-									<span><a href="#" class="alumni-name-chat">Sundar Pichai</a></span>
-								</div>
-								<div class="alumni-name">
-									<span><a href="#" class="alumni-name-chat">Sundar Pichai</a></span>
-								</div>
+							<div class="chat-list">
+                {% if empty %}
+                  Start Connecting with people and their names would appear here.
+                {% else %}
+                  {% for user in userList %}
+                    {% if user == target %}
+                      <div class="alumni-name active">
+									      <span><a href="#" class="alumni-name-chat">{{ user.name }}</a></span>
+								      </div>
+                    {% else %}
+                      <div class="alumni-name">
+                         <span><a href="/connect/student_chat/{{ user.username }}" class="alumni-name-chat">{{ user.name }}</a></span>
+							  	    </div>
+                    {% endif %}
+                  {% endfor %}
+                {% endif %}
 							</div>
 						</div>
 					</div>
@@ -77,40 +37,31 @@
 					<div class="panel panel-default m-b-zero chat-panel-child pos-rel">
 						<div class="panel-heading">
 							<h3 class="panel-title">
-								Sundar Pichai
+                {{ target.name }}
 							</h3>
 						</div>
 						<div class="panel-body chat-messages">
-									<div class="sent-message">
-										Lorem ipsum dolor sit amet   Lorem ipsum dolor sit amet  Lorem ipsum dolor sit amet  Lorem ipsum dolor sit amet 
-									</div>
+            {% if first %}
+              This is the start of your chat with {{ target.name }}.
+            {% else %}
+              {% for message in messages %}
+                {% if message.sender == user %}
+                  <div class="sent-message">
+									{{ message.message }}
+                  </div>
+                {% else %}
 									<div class="received-message">
-										Lorem ipsum dolor sit amet  Lorem ipsum dolor sit amet  Lorem ipsum dolor sit amet  Lorem ipsum dolor sit amet  Lorem ipsum dolor sit amet  Lorem ipsum dolor sit amet  Lorem ipsum dolor sit amet  Lorem ipsum dolor sit amet  Lorem ipsum dolor sit amet 
+                  {{ message.message }}
 									</div>
-									<div class="sent-message">
-										Lorem ipsum dolor sit amet   Lorem ipsum dolor sit amet  Lorem ipsum dolor sit amet  Lorem ipsum dolor sit amet 
-									</div>
-									<div class="received-message">
-										Lorem ipsum dolor sit amet  Lorem ipsum dolor sit amet  Lorem ipsum dolor sit amet  Lorem ipsum dolor sit amet  Lorem ipsum dolor sit amet  Lorem ipsum dolor sit amet  Lorem ipsum dolor sit amet  Lorem ipsum dolor sit amet  Lorem ipsum dolor sit amet 
-									</div>
-									<div class="sent-message">
-										Lorem ipsum dolor sit amet   Lorem ipsum dolor sit amet  Lorem ipsum dolor sit amet  Lorem ipsum dolor sit amet 
-									</div>
-									<div class="received-message">
-										Lorem ipsum dolor sit amet  Lorem ipsum dolor sit amet  Lorem ipsum dolor sit amet  Lorem ipsum dolor sit amet  Lorem ipsum dolor sit amet  Lorem ipsum dolor sit amet  Lorem ipsum dolor sit amet  Lorem ipsum dolor sit amet  Lorem ipsum dolor sit amet 
-									</div>
-									<div class="sent-message">
-										Lorem ipsum dolor sit amet   Lorem ipsum dolor sit amet  Lorem ipsum dolor sit amet  Lorem ipsum dolor sit amet 
-									</div>
-									<div class="received-message">
-										Lorem ipsum dolor sit amet  Lorem ipsum dolor sit amet  Lorem ipsum dolor sit amet  Lorem ipsum dolor sit amet  Lorem ipsum dolor sit amet  Lorem ipsum dolor sit amet  Lorem ipsum dolor sit amet  Lorem ipsum dolor sit amet  Lorem ipsum dolor sit amet 
-									</div>
-						</div>
+                {% endif %}
+              {% endfor %}
+            {% endif %}
+            </div>
 						<div class="panel-footer chat-message-div">
 							<form id='send-message-form'>
 								<div class="input-group">
 									<div class="chat-form-group">
-										<input type="text" class="form-control" id="message-bar" placeholder="Message . . .">
+										<input type="text" class="form-control" id="message-bar" placeholder="Write your message...">
 									</div>
 									<button type="submit" class="btn btn-default" id="message-button"><span class="glyphicon glyphicon-send"></span></button>
 								</div>
@@ -121,12 +72,14 @@
 				<div class="chat-user no-pad">
 					<div class="row" style="text-align:center;">
 						<div class="col-xs-12">
-							<img src="https://pbs.twimg.com/profile_images/481231649128980480/9hpv14pc.jpeg" style="border-radius:50%;width:220px;height:220px;">    
+							<img src="/media/{{ target.photo }}" style="border-radius:50%;width:220px;height:220px;">
 						</div>
 						<div class="col-xs-12">
-							<h4><b>Sundar</b></h4>
-							<p class="secondary-text">Metallurgical and Material Science</p>
-							<p class="secondary-text">(2012-2014)</p>
+							<h4><b>{{ target.name }}</b></h4>
+							<p class="secondary-text">{{ target.student.branch.name }}</p>
+              {% if target.student.passout_year %}
+							  <p class="secondary-text">{{ target.student.passout_year }}</p>
+              {% endif %}
 							<hr>
 							<br>
 							<span>Related Activities :</span>
@@ -143,11 +96,10 @@
 		</div>
 	</div>
 	<script>
-		window.enrollment_no = {{user.username}}
+		window.enrollment_no = {{target.username}}
 	</script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-	<script type="text/javascript" src='../../static/connect/js/main.js'></script>
-	<script type="text/javascript" src='../../static/connect/js/chat.js'></script>
-</body>
-</html>
+	<script type="text/javascript" src='/static/connect/js/main.js'></script>
+	<script type="text/javascript" src='/static/connect/js/chat.js'></script>
+{% endblock%}
