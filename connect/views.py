@@ -1,4 +1,4 @@
-from django.shortcuts import render,HttpResponse,HttpResponseRedirect
+from django.shortcuts import render,HttpResponse,HttpResponseRedirect,redirect
 from connect.models import *
 from django.core import serializers
 
@@ -109,6 +109,18 @@ def chat_request_view(request):
     send_mail('Mail from alum portal', "You're requested to chat with "+student.user.name+" go to url : "+"http://192.168.121.187:6969/connect/chat_alumni/"+chat_request.ekey+"/", 'img@channeli.in', [alumni.email])
     return JsonResponse({"done":True, "message":"Email has been sent."})
 
+@csrf_exempt
+@login_required
+def add_message(request):
+  try:
+    sender = request.user
+    receiver = User.objects.get(username=request.POST.get('target',''))
+    message = request.POST.get('message','')
+    c = Chat.objects.create(sender = sender, receiver = receiver, message = message)
+    c.save()
+    return HttpResponse('success')
+  except:
+    return HttpResponse('error')
 
 def messages(request,rcvr):
   receiver = User.objects.get(username = rcvr)
@@ -117,9 +129,40 @@ def messages(request,rcvr):
   return render(request, 'connect/chat.html',{'messages':messages,'user':user,'receiver':receiver})
 
 @login_required
-def student_chat(request):
-  user = request.user
-  return render(request, 'connect/chat.html')
+def student_chat(request,target = None):
+  if target == None:
+    user = request.user
+    try:
+      messages = Chat.objects.filter(Q(sender = user) | Q(receiver = user)).order_by('-datetime_created')[0]
+      receiver = messages.receiver.username if (messages.sender == user) else messages.sender.username
+      return redirect('/connect/student_chat/'+receiver)
+    except Exception as e:
+      print e
+      context = {
+        'empty': True,
+        'user' : user,
+      }
+      return render(request,'connect/chat.html',context)
+  else:
+    user = request.user
+    messageList = Chat.objects.filter(Q(sender = user) | Q(receiver = user)).order_by('-datetime_created')
+    userList = []
+    for message in messageList:
+      if message.sender == user and message.receiver not in userList:
+        userList.append(message.receiver)
+      elif message.receiver == user and message.sender not in userList:
+        userList.append(message.sender)
+    target = User.objects.get(username=target)
+    messages = Chat.objects.filter(Q(sender = user, receiver = target) | Q(receiver = user, sender = target)).order_by('-datetime_created')
+    print messages
+    context = {
+    'empty' : False,
+    'messages' : messages,
+    'user' : user,
+    'target' : target,
+    'userList' : userList
+    }
+  return render(request, 'connect/chat.html',context)
 
 @csrf_exempt
 def chat_list(request):

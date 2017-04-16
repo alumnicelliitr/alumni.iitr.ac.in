@@ -50,7 +50,7 @@
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
-  
+
 <div class="container">
 <h3>You searched for "{{query}}"</h3>
 
@@ -60,7 +60,7 @@
     <div class="container-fluid">
       <div class="row row-eq-height">
         <div class="col-xs-3 image-div">
-          <img src="{{row.user.photo}}" class="alumni-image">
+          <img src="/media/{{row.user.photo}}" class="alumni-image">
         </div>
         <div class="col-xs-9 description-div">
         <h4><b>{{row.user.name}}</b></h4>
@@ -73,7 +73,7 @@
         <!--span>Campus Activities :</span>
         <span class="tags">Tags</span><span class="tags">Tags</span><span class="tags">Tags</span>
         <br><br-->
-        <span style="float:left;"><a href="{{row.linked_in}}">linkedin</a>, <a href="{{row.website}}">website</a> </span><span style="float:right;"><a href="#" class="message-button" data='{{row.id}}'>Send Mail</a></span></span>
+        <span style="float:left;"><a href="{{row.linked_in}}">linkedin</a>, <a href="{{row.website}}">website</a> </span><span style="float:right;"><a href="/student_chat/{{row.username}}" class="message-button" data='{{row.id}}'>Send Mail</a></span></span>
         </div>
       </div>
     </div>

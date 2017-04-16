@@ -38,7 +38,6 @@ button.btn.btn-default.search-button{
 #message-bar {
 	border-radius: 4px 0px 0px 4px;
 	border: none;
-	padding: 15px;
 	width: 90%;
 }
 
@@ -293,4 +292,7 @@ a.alumni-name-chat:hover {
 
 button.login-button {
 	background-color: #4FC3F7;
+}
+.active {
+  background-color: #E0E0E0;
 }
