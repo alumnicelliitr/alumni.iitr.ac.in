@@ -52,23 +52,29 @@ def level(request,level0,level1 = None,level2 = None):
   return render(request,'website/page.html',context)
 
 def distinguishedform(request):
+  mTabs = load_nodes(0,None)
   if request.method == "POST":
-    distinguishForm = DistinguishForm(request.POST)
+    distinguishForm = DistinguishForm(request.POST,request.FILES)
     if distinguishForm.is_valid():
       form = distinguishForm.save()
       context = {
-        'success' : True
+        'mTabs': mTabs,
+	'success' : True
       }
       return render(request,'website/distinguishform.html',context)
     else:
+      errors = distinguishForm.errors
       context = {
+	'mTabs': mTabs,
         'distinguishForm' : distinguishForm,
-        'success' : False
+        'success' : False,
+	'errors' : errors
       }
       return render(request,'website/distinguishform.html',context)
   else:
     distinguishForm = DistinguishForm()
     context = {
+      'mTabs': mTabs,
       'distinguishForm' : distinguishForm,
       'success' : False
     }

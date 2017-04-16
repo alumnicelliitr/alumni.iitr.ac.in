@@ -4,7 +4,7 @@ class DBRouter(object):
 		Attempts to read auth models go to 'auth_db'.
 		"""
 		if model._meta.app_label == 'connect':
-			return 'alumni'
+			return 'channeli'
 		return 'default'
 
 	def db_for_write(self, model, **hints):
@@ -12,7 +12,7 @@ class DBRouter(object):
 		Attempts to write auth models go to 'auth_db'.
 		"""
 		if model._meta.app_label == 'connect':
-			return 'alumni'
+			return 'channeli'
 		return 'default'
 
 	def allow_relation(self, obj1, obj2, **hints):
@@ -30,5 +30,5 @@ class DBRouter(object):
 		database.
 		"""
 		if app_label == 'connect':
-			return db == 'alumni'
+			return db == 'channeli'
 		return 'default'
