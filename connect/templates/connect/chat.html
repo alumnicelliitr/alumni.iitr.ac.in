@@ -14,17 +14,21 @@ Chat -
 						</div>
 						<div class="panel-body">
 							<div class="chat-list">
-                {% for user in userList %}
-                  {% if user == target %}
-                    <div class="alumni-name active">
-									    <span><a href="#" class="alumni-name-chat">{{ user.name }}</a></span>
-								    </div>
-                  {% else %}
-                    <div class="alumni-name">
-                       <span><a href="/connect/student_chat/{{ user.username }}" class="alumni-name-chat">{{ user.name }}</a></span>
-								    </div>
-                  {% endif %}
-                {% endfor %}
+                {% if empty %}
+                  Start Connecting with people and their names would appear here.
+                {% else %}
+                  {% for user in userList %}
+                    {% if user == target %}
+                      <div class="alumni-name active">
+									      <span><a href="#" class="alumni-name-chat">{{ user.name }}</a></span>
+								      </div>
+                    {% else %}
+                      <div class="alumni-name">
+                         <span><a href="/connect/student_chat/{{ user.username }}" class="alumni-name-chat">{{ user.name }}</a></span>
+							  	    </div>
+                    {% endif %}
+                  {% endfor %}
+                {% endif %}
 							</div>
 						</div>
 					</div>
@@ -37,6 +41,9 @@ Chat -
 							</h3>
 						</div>
 						<div class="panel-body chat-messages">
+            {% if first %}
+              This is the start of your chat with {{ target.name }}.
+            {% else %}
               {% for message in messages %}
                 {% if message.sender == user %}
                   <div class="sent-message">
@@ -47,8 +54,9 @@ Chat -
                   {{ message.message }}
 									</div>
                 {% endif %}
-             {% endfor %}
-						</div>
+              {% endfor %}
+            {% endif %}
+            </div>
 						<div class="panel-footer chat-message-div">
 							<form id='send-message-form'>
 								<div class="input-group">

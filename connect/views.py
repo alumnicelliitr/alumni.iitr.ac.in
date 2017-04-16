@@ -8,7 +8,7 @@ from django.db.models import Q
 from django.core.mail import send_mail
 from django.http import JsonResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import logout
+from django.contrib.auth import authenticate,login,logout
 import model_constants as MC
 import json
 
@@ -78,16 +78,24 @@ def index(request):
         #If highlighted matches any on left. cool =D
 
 @csrf_exempt
-@login_required
 def chat_alumni(request, chat_ekey):
-    print chat_ekey
     try:
-        chat_request = ChatRequest.objects.get_by_ekey(chat_ekey)
+      chat_request = ChatRequest.objects.get_by_ekey(chat_ekey)
+      if request.user:
+        logout(request)
+      owner = chat_request.receiver
+      user = authenticate(username=owner.username,password='helloiitr')
+      if user is not None:
+        if user.is_active:
+          login(request,user)
+          return redirect("/connect/student_chat/" + chat_request.sender.username)
+        else:
+          redirect("/")
+      else:
+        redirect("/")
     except Exception as e:
       print e
       return HttpResponse('Not a valid link')
-    else:
-        return redirect("/chat/" + chat_request.sender.username) 
 
 
 @csrf_exempt
@@ -118,8 +126,12 @@ def add_message(request):
     message = request.POST.get('message','')
     c = Chat.objects.create(sender = sender, receiver = receiver, message = message)
     c.save()
+    chat_request, created = ChatRequest.objects.get_or_create(sender=sender, receiver=alumni.user)
+    if created:
+      send_mail('Mail from alum portal', "You're requested to chat with "+sender.name+". Go to the URL : "+"http://192.168.121.187:63000/connect/chat_alumni/"+chat_request.ekey+"/", 'img@channeli.in', ['nikhilsheoran96@gmail.com']) #alumni.email])
     return HttpResponse('success')
-  except:
+  except Exception as e:
+    print e
     return HttpResponse('error')
 
 def messages(request,rcvr):
@@ -138,6 +150,7 @@ def student_chat(request,target = None):
       return redirect('/connect/student_chat/'+receiver)
     except Exception as e:
       print e
+      #Person hasn't chatted with anyone and is opening /student_chat/
       context = {
         'empty': True,
         'user' : user,
@@ -154,9 +167,12 @@ def student_chat(request,target = None):
         userList.append(message.sender)
     target = User.objects.get(username=target)
     messages = Chat.objects.filter(Q(sender = user, receiver = target) | Q(receiver = user, sender = target)).order_by('-datetime_created')
-    print messages
+    first = False
+    if(len(messages) == 0):
+      first = True
     context = {
     'empty' : False,
+    'first' : first,
     'messages' : messages,
     'user' : user,
     'target' : target,
