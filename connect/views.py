@@ -141,7 +141,7 @@ def add_message(request):
     message = request.POST.get('message','')
     c = Chat.objects.create(sender = sender, receiver = receiver, message = message)
     c.save()
-    chat_request, created = ChatRequest.objects.get_or_create(sender=sender, receiver=alumni.user)
+    chat_request, created = ChatRequest.objects.get_or_create(sender=sender, receiver=receiver)
     if created:
       send_mail('Mail from alum portal', "You're requested to chat with "+sender.name+". Go to the URL : "+"http://192.168.121.187:63000/connect/chat_alumni/"+chat_request.ekey+"/", 'img@channeli.in', ['nikhilsheoran96@gmail.com']) #alumni.email])
     return HttpResponse('success')

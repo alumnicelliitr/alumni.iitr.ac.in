@@ -15,6 +15,8 @@ class Node(models.Model):
   content = RichTextField(default='')
   def __str__(self):
     return self.title + " @ " + str(self.level)
+  class Meta:
+    app_label = 'website'
 
 class News(models.Model):
   title = models.CharField(max_length=50)
@@ -26,6 +28,9 @@ class News(models.Model):
   visibility = models.BooleanField(default=True)
   def __str__(self):
     return self.title
+  class Meta:
+    app_label = 'website'
+
 
 class Event(models.Model):
   title = models.CharField(max_length=50)
@@ -37,6 +42,9 @@ class Event(models.Model):
   visibility = models.BooleanField(default=True)
   def __str__(self):
     return self.title
+  class Meta:
+    app_label = 'website'
+
 
 class Link(models.Model):
   title = models.CharField(max_length=50)
@@ -45,12 +53,18 @@ class Link(models.Model):
   priority = models.IntegerField(default=0)
   def __str__(self):
     return self.title
+  class Meta:
+    app_label = 'website'
+
 
 class File(models.Model):
   title = models.CharField(max_length=50,unique=True)
   file_added = models.FileField(blank=False,upload_to='website/media/')
   def __str__(self):
     return self.title
+  class Meta:
+    app_label = 'website'
+
 
 class PhotoSlider(models.Model):
   title = models.CharField(max_length=50)
@@ -59,6 +73,9 @@ class PhotoSlider(models.Model):
   priority = models.IntegerField(default=0)
   def __str__(self):
     return self.title
+  class Meta:
+    app_label = 'website'
+
 
 class DistinguishedAlumni(models.Model):
   CATEGORY_CHOICES = (
@@ -84,3 +101,5 @@ class DistinguishedAlumni(models.Model):
 
   def __str__(self):
     return self.name
+  class Meta:
+    app_label = 'website'
