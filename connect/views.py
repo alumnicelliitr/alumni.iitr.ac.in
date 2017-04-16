@@ -12,7 +12,7 @@ from django.contrib.auth import logout
 import model_constants as MC
 import json
 
-from .forms import SearchForm
+from .forms import SearchForm, AdvancedSearchForm
 
 def logout_view(request):
   logout(request)
@@ -21,44 +21,59 @@ def logout_view(request):
 @login_required
 def index(request):
   if request.method == 'POST':
-    name = request.POST.get("name")
-    branch = request.POST.get("branch")
-    batch = request.POST.get("batch")
-    query = name + "," + branch + "," + batch
-    alumni = Alumni.objects.filter(user__name__icontains = name, branch = branch, passout_year = batch)
-    context = {
-      'query': query,
-      'alumni': alumni,
-    }
-    return render(request, 'connect/search-results.html', context)
-  else:
-    branches = Branch.objects.all()
-    return render(request, 'connect/index.html', {'branches': branches})
-  '''
     form = SearchForm(request.POST)
+  else:
+    form = SearchForm(request.POST)
+  return render(request, 'connect/index.html', {'form': form})
+
+@login_required
+def advanced(request):
+  if request.method == 'POST':
+    form = AdvancedSearchForm(request.POST)
     if form.is_valid():
       name = form.cleaned_data['name']
       branch = form.cleaned_data['branch']
       batch = form.cleaned_data['batch']
       tags = form.cleaned_data['tags']
-      alumni = Alumni.objects.filter(user__name__icontains = name, branch = branch, passout_year = batch, tags__name__in = tags)
-      context = {
-        'form': form,
-        'alumni': alumni,
-      }
-      return render(request, 'connect/search-results.html', context)
+      query = []
+      alumni = Alumni.objects.all()
+      if name:
+        alumni = alumni.filter(user__name__icontains = name)
+        query.append(name)
+      if branch:
+        alumni = alumni.filter(branch = branch)
+        query.append(branch)
+      if batch:
+        alumni = alumni.filter(passout_year = batch)
+        query.append(batch)
+      if tags:
+        alumni = alumni.filter(tags__name__in = tags).distinct()
+        query.append(' '.join(tags))
+      if len(query) > 0:
+        query  = ','.join(query)
+        context = {
+          'query': query,
+          'form': form,
+          'alumni': alumni
+        }
+        return render(request, 'connect/search-results.html', context)
     else:
-      form = SearchForm()
       context = {
         'form': form
       }
-      return render(request, 'connect/index.html', {'form':form})
+      return render(request, 'connect/advanced.html', {'form':form})
   else:
-    form = SearchForm()
-    context = {
-    }
-  return render(request,'connect/index.html',{'form':form})'''
+    form = AdvancedSearchForm()
+  return render(request,'connect/advanced.html',{'form':form})
 
+def ajax_tag_search(request):
+  if request.method == 'POST':
+    form = SearchForm(request.POST)
+    if form.is_valid():
+      tags = form.cleaned_data['tags']
+      alumni_q = Alumni.objects.filter(tags__name__in = tags).distinct()
+      alumni = serializers.serialize("json", alumni_q)
+      return JsonResponse(alumni)
 #def chat(request,receiver = None):
 #    if receiver == None:
         # user = request.user

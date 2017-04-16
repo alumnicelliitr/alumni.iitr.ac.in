@@ -50,57 +50,61 @@
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
-  
+
 <div class="container Aligner">
-  
 <div class="panel panel-default Aligner-item alumni-connect">
   <div class="panel-heading">
     <h2 class="panel-title"><b>Connect with Alumni</b></h2>
   </div>
   <div class="panel-body">
-    <form action = "/connect/" method = "post">
+    <form action = "/connect/advanced/" method = "post">
       {% csrf_token %}
       <div class="form-group col-xs-12">
-        <label>Name</label>
-        <input type="text" name="name" class="form-control" placeholder="Name">
+        {{form.tags}}
+      </div>
+      <div class = "col-xs-12">
+        <span style="float:right">You can also try: <a href = "/connect/advanced/" class = "message-button">Advanced Search</a></span>
+      </div>
+      <!--div class="form-group col-xs-12">
+        <label>{{form.name.label}}</label>
+        {% for error in form.name.errors %}
+          <span class="alert alert-danger">{{ error|escape }}</span>
+        {% endfor %}
+        {{form.name}}
       </div>
       <div class="form-group col-xs-6">
-        <label>Branch</label>
-        <select name = "branch" class="form-control">
-          {% for branch in branches %}
-            <option value = {{ branch.code }}>{{branch.name}}</option>
+        <label>{{form.branch.label}}</label>
+        {% for error in form.branch.errors %}
+          <span class="alert alert-danger">{{ error|escape }}</span>
+         {% endfor %}
+        {{form.branch}}
+      </div>
+      <div class="form-group col-xs-6">
+        <label>{{form.batch.label}}</label>
+        {% for error in form.batch.errors %}
+          <span class="alert alert-danger">{{ error|escape }}</span>
           {% endfor %}
-        </select>
-      </div>
-      <div class="form-group col-xs-6">
-        <label>Batch</label>
-        <select name = "batch" class="form-control">
-          <option value = "2012">2012</option>
-          <option value = "2013">2013</option>
-          <option value = "2014">2014</option>
-          <option value = "2015">2015</option>
-          <option value = "2016">2016</option>
-          <option value = "2017">2017</option>
-        </select>
+       {{form.batch}}
       </div>
       <div class="form-group col-xs-12">
-        <label>Tags</label>
-        <input type="text" class="form-control" placeholder="Type Tags . . ." data-role="tagsinput">
+        <label>{{form.tags.label}}</label>
+        {% for error in form.tags.errors %}
+          <span class="alert alert-danger">{{ error|escape }}</span>
+        {% endfor %}
+        {{ form.tags }}
       </div>
-      <!-- <div class="form-group col-xs-12">
-        <label>Campus Activities</label>
-        <input type="email" class="form-control" placeholder="Type Campus Activities . . ." data-role="tagsinput">
-      </div> -->
       <div class="col-xs-12"><p class="help-block">Note : Fill all or atleast one field(s).</p></div>
       <div class="col-xs-12 text-center">
         <button type="submit" class="btn btn-default">Submit</button>
-      </div>
+      </div-->
     </form>
   </div>
 </div>
 
 
 </div>
+<script>
 
+</script>
 </body>
 </html>

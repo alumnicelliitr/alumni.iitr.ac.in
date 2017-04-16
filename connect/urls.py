@@ -19,6 +19,7 @@ from django.contrib.auth import views as auth_views
 
 urlpatterns = [
 	url(r'^$', views.index),
+  url(r'^advanced/$', views.advanced),
   url(r'^login/$', auth_views.login,{'template_name':'connect/login.html'}),
   url(r'^logout/$', views.logout_view, name='logout'),
   url(r'^chat_request/$', views.chat_request_view),

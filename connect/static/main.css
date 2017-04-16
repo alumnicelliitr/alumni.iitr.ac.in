@@ -85,7 +85,7 @@ input, select {
 }
 
 .Aligner-item {
-	max-width: 60%;
+	width: 60%;
 }
 
 div.panel.panel-default.alumni-connect {
