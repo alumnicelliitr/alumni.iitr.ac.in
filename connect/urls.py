@@ -29,5 +29,6 @@ urlpatterns = [
   url(r'^student_chat/(?P<target>[0-9]+)/$',views.student_chat),
   url(r'^chat_list/$',views.chat_list),
   url(r'^chat_user_list/$', views.chat_user_list),
-  url(r'^message/$',views.add_message)
+  url(r'^message/$',views.add_message),
+  url(r'^ajax_tag_search/$', views.ajax_tag_search),
 ]

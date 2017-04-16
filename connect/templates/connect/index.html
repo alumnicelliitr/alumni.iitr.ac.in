@@ -1,7 +1,24 @@
 {% extends 'connect/base.html' %}
 {% block content %}
-<div class="container Aligner">
+<style>
+  ul.search-list{
+    list-style-type:none;
+    padding:0px 30px 10px 30px;
+  }
+  ul.search-list li{
+    padding:10px;
+    border:1px solid #f0f0f0;
+  }
+  h5.search-name{
+    font-weight:600;
+  }
+  h6.search-subheading{
+    font-weight:500;
+    color:#BDBDBD;
+  }
+</style>
 
+<div class="container Aligner">
 <div class="panel panel-default Aligner-item alumni-connect">
   <div class="panel-heading">
     <h2 class="panel-title"><b>Connect with Alumni</b></h2>
@@ -17,8 +34,11 @@
       </div>
     </form>
   </div>
+  <div class="search-results">
+    <ul class="search-list">
+    </ul>
+  </div>
 </div>
-
-
 </div>
+<script src="../../static/connect/js/main.js"></script>
 {% endblock %}
