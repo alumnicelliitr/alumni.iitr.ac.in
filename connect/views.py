@@ -45,7 +45,7 @@ def advanced(request):
         query.append(branch)
       if batch:
         alumni = alumni.filter(passout_year = batch)
-        query.append(batch)
+        query.append(str(batch))
       if tags:
         alumni = alumni.filter(tags__name__in = tags).distinct()
         query.append(' '.join(tags))
@@ -66,14 +66,20 @@ def advanced(request):
     form = AdvancedSearchForm()
   return render(request,'connect/advanced.html',{'form':form})
 
+@csrf_exempt
 def ajax_tag_search(request):
   if request.method == 'POST':
     form = SearchForm(request.POST)
     if form.is_valid():
       tags = form.cleaned_data['tags']
-      alumni_q = Alumni.objects.filter(tags__name__in = tags).distinct()
-      alumni = serializers.serialize("json", alumni_q)
-      return JsonResponse(alumni)
+      alumni = Alumni.objects.filter(tags__name__in = tags).distinct()
+      data = []
+      for alumnus in alumni:
+        element = {'id': alumnus.id ,'name':alumnus.user.name, 'branch': alumnus.branch.name, 'tags': list(alumnus.tags.names()), 'batch': alumnus.passout_year}
+        data.append(element)
+      return JsonResponse({'done': True, 'data':data})
+    else:
+      return JsonResponse({'done':False,'message':'Form has errors'})
 #def chat(request,receiver = None):
 #    if receiver == None:
         # user = request.user

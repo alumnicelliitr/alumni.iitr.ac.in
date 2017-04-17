@@ -16,17 +16,26 @@ Search Results -
           <img src="/media/{{row.user.photo}}" class="alumni-image">
         </div>
         <div class="col-xs-9 description-div">
-        <h4><b>{{row.user.name}}</b></h4>
-        <span style="float:left;" class="secondary-text">{{row.branch.name}} ({{row.admission_year}}-{{row.passout_year}})</span><!--span style="float:right;" class="secondary-text">Last active : 2 days ago</span-->
-        <br>
-        <hr>
-        <span>Related Activities :</span>
-        <span class="tags">Tags</span><span class="tags">Tags</span><span class="tags">Tags</span><span class="tags">Tags</span>
-        <br><br>
-        <!--span>Campus Activities :</span>
-        <span class="tags">Tags</span><span class="tags">Tags</span><span class="tags">Tags</span>
-        <br><br-->
-        <span style="float:left;"><a href="{{row.linked_in}}">linkedin</a>, <a href="{{row.website}}">website</a> </span><span style="float:right;"><a href="/student_chat/{{row.username}}" class="message-button" data='{{row.id}}'>Send Mail</a></span></span>
+          <h4><b>{{row.user.name}}</b></h4>
+          <span style="float:left;" class="secondary-text">{{row.branch.name}} ({{row.admission_year}}-{{row.passout_year}})</span><!--span style="float:right;" class="secondary-text">Last active : 2 days ago</span-->
+          <br>
+          <hr>
+          <span>Related Activities :</span>
+          {% for tag in row.tags.names %}
+            <span class="tags">{{tag}}</span>
+          {% endfor %}
+          <br><br>
+          <span style="float:left;">
+            {% if row.linked_in %}
+              <a href="{{row.linked_in}}">linkedin</a>
+            {% endif %} 
+            {% if row.website %}
+              <a href="{{row.website}}">website</a>
+            {% endif %}
+          </span>
+          <span style="float:right;">
+            <a href="/connect/student_chat/{{row.username}}/" class="message-button" data='{{row.id}}'>Send Mail</a>
+          </span>
         </div>
       </div>
     </div>
