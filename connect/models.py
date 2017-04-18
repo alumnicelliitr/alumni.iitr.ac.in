@@ -68,10 +68,12 @@ class Alumni(models.Model):
   admission_year = models.IntegerField(verbose_name='Admission Year')
   passout_year = models.IntegerField(null=True, blank=True)
   branch = models.ForeignKey(Branch)
-  linked_in = models.CharField(max_length=MC.TEXT_LENGTH)
+  linked_in = models.CharField(max_length=MC.TEXT_LENGTH,blank=True)
+  facebook = models.CharField(max_length=MC.TEXT_LENGTH,blank=True)
   website = models.CharField(max_length=MC.TEXT_LENGTH)
   email = models.EmailField(max_length=150)
   tags = TaggableManager()
+
   def __str__(self):
     return self.user.username
   class Meta:

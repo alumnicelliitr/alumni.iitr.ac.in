@@ -91,16 +91,20 @@ Chat -
               <hr>
 							<br>
               {% if is_student %}
-                <span>Related Activities :</span>
-							  {% for tag in target.alumni.tags.all %}
+							  <!--
+                {% for tag in target.alumni.tags.all %}
 							    <span class="tags">{{tag.name}}</span>
 							  {% endfor %}
+                -->
 							  <br><br>
 							  {% if target.alumni.linked_in %}
-							    <a href="{{target.alumni.linked_in}}">LinkedIn</a>
+							    <a href="{{target.alumni.linked_in}}"><img src="/static/connect/images/linkedin.png" class="social-icon"></a>
 							  {% endif %}
+                {% if target.alumni.facebook %}
+                  <a href="{{target.alumni.facebook}}"><img src="/static/connect/images/facebook.png" class="social-icon"></a>
+                {% endif %}
 							  {% if target.alumni.website %}
-							    <a href="{{target.alumni.website}}">Website</a>
+							    <a href="{{target.alumni.website}}"><img src="/static/connect/images/web.png" class="social-icon"></a>
 							  {% endif %}
               {% else %}
                   <a href="http://students.iitr.ac.in/{{ target.username }}">Website</a>
