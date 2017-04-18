@@ -73,7 +73,10 @@ def ajax_tag_search(request):
     form = SearchForm(request.POST)
     if form.is_valid():
       tags = form.cleaned_data['tags']
-      alumni = Alumni.objects.filter(tags__name__in = tags).distinct()
+      alumni = []
+      for tag in tags:
+        alumni.extend(Alumni.objects.filter(tags__name__icontains = tag).distinct())
+#      alumni = Alumni.objects.filter(tags__name__icontains = tags).distinct()
       data = []
       for alumnus in alumni:
         element = {'username':alumnus.user.username,'id': alumnus.id ,'name':alumnus.user.name, 'branch': alumnus.branch.name, 'tags': list(alumnus.tags.names()), 'batch': alumnus.passout_year}
