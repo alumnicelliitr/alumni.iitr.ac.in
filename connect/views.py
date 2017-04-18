@@ -23,7 +23,7 @@ def index(request):
   if request.method == 'POST':
     form = SearchForm(request.POST)
   else:
-    form = SearchForm(request.POST)
+    form = SearchForm()
   return render(request, 'connect/index.html', {'form': form})
 
 @login_required
@@ -67,6 +67,7 @@ def advanced(request):
   return render(request,'connect/advanced.html',{'form':form})
 
 @csrf_exempt
+@login_required
 def ajax_tag_search(request):
   if request.method == 'POST':
     form = SearchForm(request.POST)
@@ -75,7 +76,7 @@ def ajax_tag_search(request):
       alumni = Alumni.objects.filter(tags__name__in = tags).distinct()
       data = []
       for alumnus in alumni:
-        element = {'id': alumnus.id ,'name':alumnus.user.name, 'branch': alumnus.branch.name, 'tags': list(alumnus.tags.names()), 'batch': alumnus.passout_year}
+        element = {'username':alumnus.user.username,'id': alumnus.id ,'name':alumnus.user.name, 'branch': alumnus.branch.name, 'tags': list(alumnus.tags.names()), 'batch': alumnus.passout_year}
         data.append(element)
       return JsonResponse({'done': True, 'data':data})
     else:
@@ -148,8 +149,10 @@ def add_message(request):
     c = Chat.objects.create(sender = sender, receiver = receiver, message = message)
     c.save()
     chat_request, created = ChatRequest.objects.get_or_create(sender=sender, receiver=receiver)
+    print chat_request
     if created:
       send_mail('Mail from alum portal', "You're requested to chat with "+sender.name+". Go to the URL : "+"http://192.168.121.187:63000/connect/chat_alumni/"+chat_request.ekey+"/", 'img@channeli.in', ['nikhilsheoran96@gmail.com']) #alumni.email])
+      return HttpResponse('success-mail')
     return HttpResponse('success')
   except Exception as e:
     print e

@@ -76,19 +76,23 @@ Chat -
 						</div>
 						<div class="col-xs-12">
 							<h4><b>{{ target.name }}</b></h4>
-							<p class="secondary-text">{{ target.student.branch.name }}</p>
-              {% if target.student.passout_year %}
-							  <p class="secondary-text">{{ target.student.passout_year }}</p>
-              {% endif %}
+							<p class="secondary-text">{{ target.alumni.branch.name }}</p>
+              						{% if target.alumni.passout_year %}
+							  <p class="secondary-text">{{ target.alumni.passout_year }}</p>
+              						{% endif %}
 							<hr>
 							<br>
 							<span>Related Activities :</span>
-							<span class="tags">Tags</span><span class="tags">Tags</span><span class="tags">Tags</span><span class="tags">Tags</span>
+							{% for tag in target.alumni.tags.all %}
+							  <span class="tags">{{tag.name}}</span>
+							{% endfor %}
 							<br><br>
-							<span>Campus Activities :</span>
-							<span class="tags">Tags</span><span class="tags">Tags</span><span class="tags">Tags</span>
-							<br><br>
-							<a href="#">linkedin</a> , <a href="#">facebook</a> , <a href="#">gmail</a>
+							{% if target.alumni.linked_in %}
+							  <a href="{{target.alumni.linked_in}}">linkedin</a>
+							{% endif %}
+							{% if target.alumni.website %}
+							  <a href="{{target.alumni.website}}">website</a>
+							{% endif %}
 						</div>
 					</div>
 				</div>
@@ -96,7 +100,7 @@ Chat -
 		</div>
 	</div>
 	<script>
-		window.enrollment_no = {{target.username}}
+		window.enrollment_no = '{{target.username}}';
 	</script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
