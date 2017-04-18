@@ -115,9 +115,9 @@ def chat_alumni(request, chat_ekey):
           login(request,user)
           return redirect("/connect/student_chat/" + chat_request.sender.username)
         else:
-          redirect("/")
+          return redirect("/")
       else:
-        redirect("/")
+        return redirect("/")
     except Exception as e:
       print e
       return HttpResponse('Not a valid link')
@@ -152,10 +152,8 @@ def add_message(request):
     c = Chat.objects.create(sender = sender, receiver = receiver, message = message)
     c.save()
     chat_request, created = ChatRequest.objects.get_or_create(sender=sender, receiver=receiver)
-    print chat_request
     if created:
-      send_mail('Mail from alum portal', "You're requested to chat with "+sender.name+". Go to the URL : "+"http://192.168.121.187:63000/connect/chat_alumni/"+chat_request.ekey+"/", 'img@channeli.in', ['nikhilsheoran96@gmail.com']) #alumni.email])
-      return HttpResponse('success-mail')
+      send_mail('Mail from alum portal', "You're requested to chat with "+sender.name+". Go to the URL : "+"https://daair.iitr.ac.in/connect/chat_alumni/"+chat_request.ekey+"/", 'nik17.ucs2014@iitr.ac.in', ['nikhilsheoran96@gmail.com']) #alumni.email])
     return HttpResponse('success')
   except Exception as e:
     print e
