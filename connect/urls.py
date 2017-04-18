@@ -26,7 +26,7 @@ urlpatterns = [
   url(r'^chat_alumni/(?P<chat_ekey>[0-9a-zA-Z-_]+.{0,2})/$', views.chat_alumni),
   url(r'^messages/(?P<rcvr>[0-9]{8})/$',views.messages),
   url(r'^student_chat/$',views.student_chat),
-  url(r'^student_chat/(?P<target>[0-9]+)/$',views.student_chat),
+  url(r'^student_chat/(?P<target>[a-z0-9]+)/$',views.student_chat),
   url(r'^chat_list/$',views.chat_list),
   url(r'^chat_user_list/$', views.chat_user_list),
   url(r'^message/$',views.add_message),

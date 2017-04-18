@@ -1,7 +1,7 @@
 from website.models import *
 from django.forms import ModelForm
 from django.utils.translation import ugettext_lazy as _
-
+from django import forms
 class DistinguishForm(ModelForm):
 	class Meta:
 		model = DistinguishedAlumni
@@ -21,4 +21,7 @@ class DistinguishForm(ModelForm):
 			"optional1": _("Optional Certificates"),
 			"optional2": _("Optional Certificates"),
 			"optional3": _("Optional Certificates"),
-        }
+        	}
+		widgets = {
+			'dob' : forms.TextInput(attrs={'placeholder':'MM/DD/YYYY'})
+		}

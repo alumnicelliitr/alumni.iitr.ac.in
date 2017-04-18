@@ -34,7 +34,7 @@ Search Results -
             {% endif %}
           </span>
           <span style="float:right;">
-            <a href="/connect/student_chat/{{row.username}}/" class="message-button" data='{{row.id}}'>Send Mail</a>
+            <a href="/connect/student_chat/{{row.user.username}}/" class="message-button" data='{{row.id}}'>Send Mail</a>
           </span>
         </div>
       </div>
@@ -60,7 +60,7 @@ Search Results -
     </div>
   </div>
 </div>
-<script type="text/javascript" src='../../static/connect/js/search-results.js'></script>
+<script type="text/javascript" src='/static/connect/js/search-results.js'></script>
 
 </div>
 {% endblock %}

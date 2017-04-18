@@ -19,7 +19,7 @@ $(document).ready(function(){
             str+= "<li><h5 class='search-name'>"+ searchResult.data[i].name +"</h5><h6 class='search-subheading'>" + searchResult.data[i].branch + ", Batch of "+ searchResult.data[i].batch +"</h6><h6 class='search-tags'>Tags : ";
             tags = searchResult.data[i].tags.join(", ")
             str+=  tags;
-            str+= "</h6><a href='#'>Send Connect Request</a></li>";
+            str+= "</h6><a href='/connect/student_chat/"+searchResult.data[i].username+"/'>Send Connect Request</a></li>";
           }
           $(".search-list")[0].innerHTML = str;
         }
