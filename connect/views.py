@@ -14,9 +14,29 @@ import json
 
 from .forms import SearchForm, AdvancedSearchForm
 
+
+def is_valid(sender,receiver):
+  valid = False
+  is_student = False
+  is_alumni = False
+  try:
+    if(sender.student and receiver.alumni):
+      is_student = True
+      valid = True
+  except:
+    try:
+      if(sender.alumni and receiver.student):
+        is_alumni = True
+        valid = True
+      else:
+        valid = False
+    except:
+      valid = False
+  return valid,is_student,is_alumni
+
 def logout_view(request):
   logout(request)
-  return HttpResponseRedirect('/done')
+  return HttpResponseRedirect('/connect/')
 
 @login_required
 def index(request):
@@ -149,12 +169,17 @@ def add_message(request):
     sender = request.user
     receiver = User.objects.get(username=request.POST.get('target',''))
     message = request.POST.get('message','')
-    c = Chat.objects.create(sender = sender, receiver = receiver, message = message)
-    c.save()
-    chat_request, created = ChatRequest.objects.get_or_create(sender=sender, receiver=receiver)
-    if created:
-      send_mail('Mail from alum portal', "You're requested to chat with "+sender.name+". Go to the URL : "+"https://daair.iitr.ac.in/connect/chat_alumni/"+chat_request.ekey+"/", 'nik17.ucs2014@iitr.ac.in', ['nikhilsheoran96@gmail.com']) #alumni.email])
-    return HttpResponse('success')
+    valid,is_student,is_alumni = is_valid(sender,receiver)
+    if valid:
+      c = Chat.objects.create(sender = sender, receiver = receiver, message = message)
+      c.save()
+      if is_student:
+        chat_request, created = ChatRequest.objects.get_or_create(sender=sender, receiver=receiver)
+        if created:
+          send_mail('Mail from alum portal', "You're requested to chat with "+sender.name+". Go to the URL : "+"https://daair.iitr.ac.in/connect/chat_alumni/"+chat_request.ekey+"/", 'nik17.ucs2014@iitr.ac.in', ['nikhilsheoran96@gmail.com']) #alumni.email])
+      return HttpResponse('success')
+    else:
+      return HttpResponse('error')
   except Exception as e:
     print e
     return HttpResponse('error')
@@ -191,11 +216,20 @@ def student_chat(request,target = None):
       elif message.receiver == user and message.sender not in userList:
         userList.append(message.sender)
     target = User.objects.get(username=target)
-    messages = Chat.objects.filter(Q(sender = user, receiver = target) | Q(receiver = user, sender = target)).order_by('-datetime_created')
+    disabled = False
     first = False
-    if(len(messages) == 0):
-      first = True
+    valid,is_student,is_alumni = is_valid(user,target)
+    if valid:
+      messages = Chat.objects.filter(Q(sender = user, receiver = target) | Q(receiver = user, sender = target)).order_by('-datetime_created')
+      first = False
+      if(len(messages) == 0):
+        first = True
+    else:
+      messages = []
     context = {
+    'valid' : valid,
+    'is_student' : is_student,
+    'is_alumni' : is_alumni,
     'empty' : False,
     'first' : first,
     'messages' : messages,

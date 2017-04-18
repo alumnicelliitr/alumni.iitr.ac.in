@@ -58,7 +58,8 @@ Chat -
             {% endif %}
             </div>
 						<div class="panel-footer chat-message-div">
-							<form id='send-message-form'>
+              {% if valid %}
+              <form id='send-message-form'>
 								<div class="input-group">
 									<div class="chat-form-group">
 										<input type="text" class="form-control" id="message-bar" placeholder="Write your message...">
@@ -66,6 +67,9 @@ Chat -
 									<button type="submit" class="btn btn-default" id="message-button"><span class="glyphicon glyphicon-send"></span></button>
 								</div>
 							</form>
+              {% else %}
+                You can't chat with {{ target.name }}
+              {% endif %}
 						</div>
 					</div>
 				</div>
@@ -76,23 +80,31 @@ Chat -
 						</div>
 						<div class="col-xs-12">
 							<h4><b>{{ target.name }}</b></h4>
-							<p class="secondary-text">{{ target.alumni.branch.name }}</p>
-              						{% if target.alumni.passout_year %}
-							  <p class="secondary-text">{{ target.alumni.passout_year }}</p>
-              						{% endif %}
-							<hr>
+              {% if is_student %}
+							  <p class="secondary-text">{{ target.alumni.branch.name }}</p>
+                  {% if target.alumni.passout_year %}
+							    <p class="secondary-text">{{ target.alumni.passout_year }}</p>
+                  {% endif %}
+              {% else %}
+                <p class="secondary-text">{{ target.student.branch.name }}</p>
+              {% endif %}
+              <hr>
 							<br>
-							<span>Related Activities :</span>
-							{% for tag in target.alumni.tags.all %}
-							  <span class="tags">{{tag.name}}</span>
-							{% endfor %}
-							<br><br>
-							{% if target.alumni.linked_in %}
-							  <a href="{{target.alumni.linked_in}}">linkedin</a>
-							{% endif %}
-							{% if target.alumni.website %}
-							  <a href="{{target.alumni.website}}">website</a>
-							{% endif %}
+              {% if is_student %}
+                <span>Related Activities :</span>
+							  {% for tag in target.alumni.tags.all %}
+							    <span class="tags">{{tag.name}}</span>
+							  {% endfor %}
+							  <br><br>
+							  {% if target.alumni.linked_in %}
+							    <a href="{{target.alumni.linked_in}}">LinkedIn</a>
+							  {% endif %}
+							  {% if target.alumni.website %}
+							    <a href="{{target.alumni.website}}">Website</a>
+							  {% endif %}
+              {% else %}
+                  <a href="http://students.iitr.ac.in/{{ target.username }}">Website</a>
+              {% endif %}
 						</div>
 					</div>
 				</div>
