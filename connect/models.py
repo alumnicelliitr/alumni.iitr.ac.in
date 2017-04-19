@@ -70,7 +70,9 @@ class Alumni(models.Model):
   branch = models.ForeignKey(Branch)
   linked_in = models.CharField(max_length=MC.TEXT_LENGTH,blank=True)
   facebook = models.CharField(max_length=MC.TEXT_LENGTH,blank=True)
-  website = models.CharField(max_length=MC.TEXT_LENGTH)
+  website = models.CharField(max_length=MC.TEXT_LENGTH,blank=True)
+  profile = models.CharField(max_length=MC.TEXT_LENGTH,blank=True)
+  company = models.CharField(max_length=MC.TEXT_LENGTH,blank=True)
   email = models.EmailField(max_length=150)
   tags = TaggableManager()
 
