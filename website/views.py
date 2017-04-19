@@ -1,4 +1,6 @@
 from django.shortcuts import render,redirect
+from django.template.loader import render_to_string
+from django.core.mail import send_mail, EmailMessage
 from datetime import datetime
 from django.shortcuts import render,get_object_or_404
 from django.http import Http404, HttpResponseRedirect, HttpResponse
@@ -58,17 +60,32 @@ def distinguishedform(request):
     if distinguishForm.is_valid():
       form = distinguishForm.save()
       context = {
+        'form' : distinguishForm,
+      }
+      text = render_to_string('website/mail.html',context=context)
+      print text
+      mail = EmailMessage('Distinguished Alumni Application',text,'nik17.ucs2014@iitr.ac.in',['nikhilsheoran96@gmail.com'])
+      mail.attach(form.photo.name, form.photo.read())
+      mail.attach(form.resume.name, form.resume.read())
+      if form.optional1:
+        mail.attach(form.optional1.name, form.optional1.read())
+      if form.optional2:
+        mail.attach(form.optional2.name, form.optional2.read())
+      if form.optional3:
+        mail.attach(form.optional3.name, form.optional3.read())
+      mail.send()
+      context = {
         'mTabs': mTabs,
-	'success' : True
+        'success' : True
       }
       return render(request,'website/distinguishform.html',context)
     else:
       errors = distinguishForm.errors
       context = {
-	'mTabs': mTabs,
+        'mTabs': mTabs,
         'distinguishForm' : distinguishForm,
         'success' : False,
-	'errors' : errors
+        'errors' : errors
       }
       return render(request,'website/distinguishform.html',context)
   else:
