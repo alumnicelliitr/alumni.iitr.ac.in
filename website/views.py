@@ -64,7 +64,7 @@ def distinguishedform(request):
       }
       text = render_to_string('website/mail.html',context=context)
       print text
-      mail = EmailMessage('Distinguished Alumni Application',text,'nik17.ucs2014@iitr.ac.in',['nikhilsheoran96@gmail.com'])
+      mail = EmailMessage('Distinguished Alumni Application',text,'nik17.ucs2014@iitr.ac.in',['nikhilsheoran96@gmail.com','daair.iitr@iitr.ac.in'])
       mail.attach(form.photo.name, form.photo.read())
       mail.attach(form.resume.name, form.resume.read())
       if form.optional1:

@@ -170,6 +170,13 @@ img.alumni-image {
   height: 100%;
 }
 
+.social-icon {
+  width:35px;
+  height:35px;
+  border-radius:4px;
+  display:inline-block;
+}
+
 .chat-panel-body {
 	padding: 0px 15px 0px 15px; 
 }
