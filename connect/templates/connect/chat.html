@@ -91,17 +91,18 @@ Chat -
               <hr>
 							<br>
               {% if is_student %}
-							  <!--
+		  <!--
                 {% for tag in target.alumni.tags.all %}
-							    <span class="tags">{{tag.name}}</span>
-							  {% endfor %}
+		    <span class="tags">{{tag.name}}</span>
+		{% endfor %}
                 -->
-							  <br><br>
                 {% if target.alumni.profile %}
                   Working as {{ target.alumni.profile }}
+		<br/>
                 {% endif %}
                 {% if target.alumni.company %}
                   Working at {{ target.alumni.company }}
+		<br/>
                 {% endif %}
                 {% if target.alumni.linked_in %}
 							    <a href="{{target.alumni.linked_in}}"><img src="/static/connect/images/linkedin.png" class="social-icon"></a>
