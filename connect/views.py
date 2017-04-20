@@ -42,6 +42,22 @@ def logout_view(request):
 def index(request):
   if request.method == 'POST':
     form = SearchForm(request.POST)
+    if form.is_valid():
+      tags = form.cleaned_data['tags']
+      alumni = []
+      if tags:
+        for tag in tags:
+          alumni.extend(Alumni.objects.filter(Q(tags__name__icontains = tag)|Q(user__name__icontains = tag)).distinct())
+        print alumni
+        print tags
+        query = ','.join(tags)
+        context = {
+          'query': query,
+          'form': form,
+          'alumni': alumni
+        }
+        return render(request, 'connect/search-results.html', context)
+    return render(request, 'connect/index.html', {'form': form})
   else:
     form = SearchForm()
   return render(request, 'connect/index.html', {'form': form})

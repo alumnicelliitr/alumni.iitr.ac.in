@@ -97,7 +97,13 @@ Chat -
 							  {% endfor %}
                 -->
 							  <br><br>
-							  {% if target.alumni.linked_in %}
+                {% if target.alumni.profile %}
+                  Working as {{ target.alumni.profile }}
+                {% endif %}
+                {% if target.alumni.company %}
+                  Working at {{ target.alumni.company }}
+                {% endif %}
+                {% if target.alumni.linked_in %}
 							    <a href="{{target.alumni.linked_in}}"><img src="/static/connect/images/linkedin.png" class="social-icon"></a>
 							  {% endif %}
                 {% if target.alumni.facebook %}
