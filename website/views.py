@@ -28,7 +28,7 @@ def load_nodes(level,parent = None):
 
 def load_level(url_name,level = 0):
   try:
-    active = Node.objects.filter(visibility=True,level=level,url_name=url_name).get()
+    active = Node.objects.filter(level=level,url_name=url_name).get()
     active.url = "/" + url_name
     active.children = load_nodes(level+1,active)
     return active
@@ -45,6 +45,7 @@ def level(request,level0,level1 = None,level2 = None):
     active = load_level(level2,2)
   base = load_level(level0,0)
   if active == None:
+    #try if a page
     return redirect('/')
   context = {
     'mTabs':mTabs,
@@ -52,6 +53,56 @@ def level(request,level0,level1 = None,level2 = None):
     'base':base,
   }
   return render(request,'website/page.html',context)
+
+def distinguishedformnew(request):
+  mTabs = load_nodes(0,None)
+  if request.method == "POST":
+    distinguishForm = DistinguishFormNominee(request.POST,request.FILES)
+    distinguishForm2 = DistinguishFormNominator(request.POST)
+    if distinguishForm.is_valid() and distinguishForm2.is_valid():
+      form = distinguishForm.save()
+      form2 = distinguishForm2.save(commit=False)
+      form2.nominee = form
+      form2.save()
+      context = {
+        'form' : distinguishForm,
+	'form2' : distinguishForm2
+      }
+      text = render_to_string('website/mail.html',context=context)
+#      print text
+      mail = EmailMessage('Distinguished Alumni Application',text,'nik17.ucs2014@iitr.ac.in',['nikhilsheoran96@gmail.com','daair.iitr@iitr.ac.in'])
+      mail.attach(form.nominee_photo.name, form.nominee_photo.read())
+      mail.attach(form.nominee_resume.name, form.nominee_resume.read())
+      if form.nominee_optional1:
+        mail.attach(form.nominee_optional1.name, form.nominee_optional1.read())
+      mail.send()
+      context = {
+        'mTabs': mTabs,
+        'success' : True
+      }
+      return render(request,'website/distinguishform2.html',context)
+    else:
+      errors = distinguishForm.errors
+      errors2 = distinguishForm2.errors
+      context = {
+        'mTabs': mTabs,
+        'distinguishForm' : distinguishForm,
+	'distinguishForm2' : distinguishForm2,
+        'success' : False,
+        'errors' : errors,
+	'errors2' : errors2
+      }
+      return render(request,'website/distinguishform2.html',context)
+  else:
+    distinguishForm = DistinguishFormNominee()
+    distinguishForm2 = DistinguishFormNominator()
+    context = {
+      'mTabs': mTabs,
+      'distinguishForm' : distinguishForm,
+      'distinguishForm2' : distinguishForm2,
+      'success' : False
+    }
+  return render(request,'website/distinguishform2.html',context)
 
 def distinguishedform(request):
   mTabs = load_nodes(0,None)

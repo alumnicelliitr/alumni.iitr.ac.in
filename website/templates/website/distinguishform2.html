@@ -27,23 +27,47 @@ Dean Of Alumni Affairs And International Relations
 
       <div class="twelve wide column">
         <h4 class="ui top attached block header">
-          Distinguished Alumni Awards - Form
+          Distinguished Alumnus Awards - Form
         </h4>
         <div class="distinguishedForm">
 	  {% if success == False %}
           	<form method="post" action="" enctype="multipart/form-data" class="ui form">
             	{% csrf_token %}
-            	{% for field in distinguishForm %}
+            	<div style="text-align:center">
+			<h3>Details of the Nominee</h3>
+		</div>
+		{% for field in distinguishForm %}
               	<div class="field">
+			{% for error in field.errors %}
+				<div class="alert alert-danger">
+				<strong>{{ error|escape }}</strong>
+				</div>
+			{% endfor %}
                 	<label for="{{ field.auto_id }}">{{ field.label_tag }}
-                	{% if field.field.required %}
-                    		<span class="required">*</span>
-                	{% endif %}
-                	</label>
+               	</label>
                 	{{ field }}
               	</div>
             	{% endfor %}
-          	<button class="distinguishedSubmit">Submit</button>
+		<br/><hr/><br/>
+             	<div style="text-align:center">
+			<h3>Details of the Nominator</h3>
+		</div>
+		{% for field in distinguishForm2 %}
+              	<div class="field">
+       			{% for error in field.errors %}
+			<div class="alert alert-danger">
+			<strong>{{ error|escape }}</strong>
+			</div>
+			{% endfor %}
+                <label for="{{ field.auto_id }}">{{ field.label_tag }}
+                </label>
+                {{ field }}
+              	</div>
+            	{% endfor %}
+		<br/>
+		<input type="checkbox" name="knowledge" value="knowledge" required>&nbsp&nbspI affirm that the information provided here is true to the best of my knowledge and should an information be found untrue, the nomination may be cancelled.
+		<br/><br/>
+		<button class="distinguishedSubmit">Submit</button>
           	</form>
           {% else %}
 		Successfully submitted the form
