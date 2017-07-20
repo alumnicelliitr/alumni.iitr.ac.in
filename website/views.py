@@ -68,14 +68,25 @@ def distinguishedformnew(request):
         'form' : distinguishForm,
 	'form2' : distinguishForm2
       }
-      text = render_to_string('website/mail.html',context=context)
-#      print text
-      mail = EmailMessage('Distinguished Alumni Application',text,'nik17.ucs2014@iitr.ac.in',['nikhilsheoran96@gmail.com','daair.iitr@iitr.ac.in'])
+
+      #Sending Acknowledgement Email
+      text = render_to_string('website/acknowledgement.html',context=context)
+      mail = EmailMessage('Nomination for DAA received',text,'nik17.ucs2014@iitr.ac.in',[form.nominee_email,form2.nominator_email,'nikhilsheoran96@gmail.com'])
       mail.attach(form.nominee_photo.name, form.nominee_photo.read())
       mail.attach(form.nominee_resume.name, form.nominee_resume.read())
       if form.nominee_optional1:
         mail.attach(form.nominee_optional1.name, form.nominee_optional1.read())
       mail.send()
+
+      #Sending Details Mail
+      text = render_to_string('website/mail.html',context=context)
+      mail = EmailMessage('Distinguished Alumni Application',text,'nik17.ucs2014@iitr.ac.in',['nikhilsheoran96@gmail.com'])
+      mail.attach(form.nominee_photo.name, form.nominee_photo.read())
+      mail.attach(form.nominee_resume.name, form.nominee_resume.read())
+      if form.nominee_optional1:
+        mail.attach(form.nominee_optional1.name, form.nominee_optional1.read())
+      mail.send()
+
       context = {
         'mTabs': mTabs,
         'success' : True
@@ -104,49 +115,50 @@ def distinguishedformnew(request):
     }
   return render(request,'website/distinguishform2.html',context)
 
-def distinguishedform(request):
-  mTabs = load_nodes(0,None)
-  if request.method == "POST":
-    distinguishForm = DistinguishForm(request.POST,request.FILES)
-    if distinguishForm.is_valid():
-      form = distinguishForm.save()
-      context = {
-        'form' : distinguishForm,
-      }
-      text = render_to_string('website/mail.html',context=context)
-      print text
-      mail = EmailMessage('Distinguished Alumni Application',text,'nik17.ucs2014@iitr.ac.in',['nikhilsheoran96@gmail.com','daair.iitr@iitr.ac.in'])
-      mail.attach(form.photo.name, form.photo.read())
-      mail.attach(form.resume.name, form.resume.read())
-      if form.optional1:
-        mail.attach(form.optional1.name, form.optional1.read())
-      if form.optional2:
-        mail.attach(form.optional2.name, form.optional2.read())
-      if form.optional3:
-        mail.attach(form.optional3.name, form.optional3.read())
-      mail.send()
-      context = {
-        'mTabs': mTabs,
-        'success' : True
-      }
-      return render(request,'website/distinguishform.html',context)
-    else:
-      errors = distinguishForm.errors
-      context = {
-        'mTabs': mTabs,
-        'distinguishForm' : distinguishForm,
-        'success' : False,
-        'errors' : errors
-      }
-      return render(request,'website/distinguishform.html',context)
-  else:
-    distinguishForm = DistinguishForm()
-    context = {
-      'mTabs': mTabs,
-      'distinguishForm' : distinguishForm,
-      'success' : False
-    }
-  return render(request,'website/distinguishform.html',context)
+#def distinguishedform(request):
+#  mTabs = load_nodes(0,None)
+#  if request.method == "POST":
+#    distinguishForm = DistinguishForm(request.POST,request.FILES)
+#    if distinguishForm.is_valid():
+#      form = distinguishForm.save()
+#      context = {
+#        'form' : distinguishForm,
+#      }
+#      text = render_to_string('website/mail.html',context=context)
+#      print text
+#      mail = EmailMessage('Distinguished Alumni Application',text,'nik17.ucs2014@iitr.ac.in',['nikhilsheoran96@gmail.com','daair.iitr@iitr.ac.in'])
+#      mail.attach(form.photo.name, form.photo.read())
+#      mail.attach(form.resume.name, form.resume.read())
+#      if form.optional1:
+#        mail.attach(form.optional1.name, form.optional1.read())
+#      if form.optional2:
+#        mail.attach(form.optional2.name, form.optional2.read())
+#      if form.optional3:
+#        mail.attach(form.optional3.name, form.optional3.read())
+#      mail.send()
+#      context = {
+#        'mTabs': mTabs,
+#        'success' : True
+#      }
+#      return render(request,'website/distinguishform.html',context)
+#    else:
+#      errors = distinguishForm.errors
+#      context = {
+#        'mTabs': mTabs,
+#        'distinguishForm' : distinguishForm,
+#        'success' : False,
+#        'errors' : errors
+#      }
+#      return render(request,'website/distinguishform.html',context)
+#  else:
+#    distinguishForm = DistinguishForm()
+#    context = {
+#      'mTabs': mTabs,
+#      'distinguishForm' : distinguishForm,
+#      'success' : False
+#    }
+#  return render(request,'website/distinguishform.html',context)
+#
 
 def index(request):
   mTabs = load_nodes(0,None)

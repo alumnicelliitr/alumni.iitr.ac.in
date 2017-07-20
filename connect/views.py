@@ -174,7 +174,7 @@ def chat_request_view(request):
     chat_request, created = ChatRequest.objects.get_or_create(sender=request.user, receiver=alumni.user)
 #    if not created:
 #        return JsonResponse({"done":False, "message":"You have already requested from this alumni"})
-    send_mail('Mail from alum portal', "You're requested to chat with "+student.user.name+" go to url : "+"http://192.168.121.187:6969/connect/chat_alumni/"+chat_request.ekey+"/", 'img@channeli.in', [alumni.email])
+    send_mail('Mail from alum portal', "Welcome from Alumni Relations Cell, IIT Roorkee. We request you to chat with "+student.user.name+". Go to url : "+"http://daair.iitr.ac.in/connect/chat_alumni/"+chat_request.ekey+"/", 'img@channeli.in', ['alumnicell.iitr@gmail.com','kushtaneja16@gmail.com','nikhilsheoran96@gmail.com',alumni.email])
     return JsonResponse({"done":True, "message":"Email has been sent."})
 
 @csrf_exempt
@@ -191,7 +191,7 @@ def add_message(request):
       if is_student:
         chat_request, created = ChatRequest.objects.get_or_create(sender=sender, receiver=receiver)
         if created:
-          send_mail('Mail from alum portal', "You're requested to chat with "+sender.name+". Go to the URL : "+"https://daair.iitr.ac.in/connect/chat_alumni/"+chat_request.ekey+"/", 'nik17.ucs2014@iitr.ac.in', ['nikhilsheoran96@gmail.com']) #alumni.email])
+ 	  send_mail('Mail from alum portal', "Welcome from Alumni Relations Cell, IIT Roorkee. We request you to chat with "+sender.name+". Go to url : "+"http://daair.iitr.ac.in/connect/chat_alumni/"+chat_request.ekey+"/", 'nik17.ucs2014@iitr.ac.in', ['alumnicell.iitr@gmail.com','kushtaneja16@gmail.com','nikhilsheoran96@gmail.com',receiver.email])
       return HttpResponse('success')
     else:
       return HttpResponse('error')

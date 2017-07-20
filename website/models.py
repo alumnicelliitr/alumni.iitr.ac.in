@@ -118,7 +118,7 @@ class DistinguishedAlumniNominee(models.Model):
   nominee_quals = models.TextField(null=True,blank=True)
   nominee_address = models.TextField()
   nominee_designation = models.CharField(max_length=50)
-  nominee_category = models.CharField(max_length=50,choices=CATEGORY_CHOICES)
+  nominee_category = models.CharField(max_length=100,choices=CATEGORY_CHOICES)
   nominee_description = models.TextField()
   nominee_webpage = models.CharField(max_length=50,null=True,blank=True)
   nominee_linkedin = models.CharField(max_length=50,null=True,blank=True)

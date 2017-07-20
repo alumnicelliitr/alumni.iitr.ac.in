@@ -19,12 +19,12 @@ Chat -
                 {% else %}
                   {% for user in userList %}
                     {% if user == target %}
-                      <div class="alumni-name active">
-									      <span><a href="#" class="alumni-name-chat">{{ user.name }}</a></span>
+                      <div class="alumni-name active user-name">
+									      <span><a href="#" class="alumni-name-chat">{{ user.name|lower }}</a></span>
 								      </div>
                     {% else %}
-                      <div class="alumni-name">
-                         <span><a href="/connect/student_chat/{{ user.username }}" class="alumni-name-chat">{{ user.name }}</a></span>
+                      <div class="alumni-name user-name">
+                         <span><a href="/connect/student_chat/{{ user.username }}" class="alumni-name-chat">{{ user.name|lower }}</a></span>
 							  	    </div>
                     {% endif %}
                   {% endfor %}
@@ -36,13 +36,13 @@ Chat -
 				<div class="chat-main no-pad">
 					<div class="panel panel-default m-b-zero chat-panel-child pos-rel">
 						<div class="panel-heading">
-							<h3 class="panel-title">
-                {{ target.name }}
+							<h3 class="panel-title user-name">
+                					{{ target.name|lower }}
 							</h3>
 						</div>
 						<div class="panel-body chat-messages">
             {% if first %}
-              This is the start of your chat with {{ target.name }}.
+              This is the start of your chat with <span class="user-name">{{ target.name|lower }}</span>.
             {% else %}
               {% for message in messages %}
                 {% if message.sender == user %}
@@ -68,7 +68,7 @@ Chat -
 								</div>
 							</form>
               {% else %}
-                You can't chat with {{ target.name }}
+                You can't chat with <span class="user-name">{{ target.name|lower }}</span>
               {% endif %}
 						</div>
 					</div>
@@ -79,7 +79,7 @@ Chat -
 							<img src="https://channeli.in/media/{{ target.photo }}" style="border-radius:50%;width:220px;height:220px;">
 						</div>
 						<div class="col-xs-12">
-							<h4><b>{{ target.name }}</b></h4>
+							<h4 class="user-name"><b>{{ target.name|lower }}</b></h4>
               {% if is_student %}
 							  <p class="secondary-text">{{ target.alumni.branch.name }}</p>
                   {% if target.alumni.passout_year %}

@@ -304,3 +304,10 @@ button.login-button {
 .active {
   background-color: #E0E0E0;
 }
+.search-results{
+  overflow-y: scroll;
+  max-height:250px;
+}
+.user-name{
+  text-transform:capitalize;
+}
