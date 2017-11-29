@@ -18,8 +18,12 @@ from website import views
 
 urlpatterns = [
 	url(r'^$', views.index),
+	url(r'^samp$', views.samp_index),
+	url(r'^samp/$', views.samp_index),
+	url(r'^card$',views.alumnicard),
+	url(r'^card/$',views.alumnicard),
+	url(r'^distinguished$', views.distinguishedformnew),
 	url(r'^distinguished/$', views.distinguishedformnew),
-#	url(r'^distinguished/$', views.distinguishedform),
 	url(r'^(?P<level0>[a-z]+)$',views.level),
 	url(r'^(?P<level0>[a-z]+)/(?P<level1>[a-z]+)$',views.level),
 	url(r'^(?P<level0>[a-z]+)/(?P<level1>[a-z]+)/(?P<level2>[a-z]+)$',views.level)

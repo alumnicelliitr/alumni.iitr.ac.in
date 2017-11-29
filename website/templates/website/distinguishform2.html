@@ -12,7 +12,7 @@ Dean Of Resources and Alumni Affairs
       <div class="four wide column">
         <div class="ui vertical pointing menu width100">
           <h4 class="item block header side-h">
-          Distinguished Alumnus Awards
+          Distinguished Alumni Awards
           </h4>
              <a href="/nomination">
               <div class="item">
@@ -27,7 +27,7 @@ Dean Of Resources and Alumni Affairs
 
       <div class="twelve wide column">
         <h4 class="ui top attached block header">
-          Distinguished Alumnus Awards - Form
+          Distinguished Alumni Awards - Form
         </h4>
         <div class="distinguishedForm">
 	  {% if success == False %}
@@ -67,6 +67,11 @@ Dean Of Resources and Alumni Affairs
 		<br/>
 		<input type="checkbox" name="knowledge" value="knowledge" required>&nbsp&nbspI affirm that the information provided here is true to the best of my knowledge and should an information be found untrue, the nomination may be cancelled.
 		<br/><br/>
+		{% if errors or errors2 %}
+			<div class="alert alert-danger">
+			<strong>Please correct the errors above</strong>
+			</div>
+		{% endif %}
 		<button class="distinguishedSubmit">Submit</button>
           	</form>
           {% else %}

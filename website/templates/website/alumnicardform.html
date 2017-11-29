@@ -1,0 +1,61 @@
+{% extends 'website/base.html' %}
+
+{% block title %}
+Dean Of Resources and Alumni Affairs
+{% endblock %}
+
+{% block content %}
+
+<section class="content">
+  <div class="ui container">
+    <div class="ui grid">
+      <div class="four wide column">
+        <div class="ui vertical pointing menu width100">
+          <h4 class="item block header side-h">
+          Alumni Card Form
+          </h4>
+             <div class="active item">
+                Registration Form
+             </div>
+        </div>
+      </div>
+
+      <div class="twelve wide column">
+        <h4 class="ui top attached block header">
+          Alumni Card Registration Form
+        </h4>
+        <div class="distinguishedForm">
+	  {% if success == False %}
+          	<form method="post" action="" enctype="multipart/form-data" class="ui form">
+            	{% csrf_token %}
+		{% for field in alumniform %}
+              	<div class="field">
+			{% for error in field.errors %}
+				<div class="alert alert-danger">
+				<strong>{{ error|escape }}</strong>
+				</div>
+			{% endfor %}
+                	<label for="{{ field.auto_id }}">{{ field.label_tag }}
+               	</label>
+                	{{ field }}
+              	</div>
+            	{% endfor %}
+		<hr/><br/>
+		<input type="checkbox" name="knowledge" value="knowledge" required>&nbsp&nbspI affirm that the information provided here is true to the best of my knowledge and request you to issue me a IITRAA membership card.
+		<br/><br/>
+		{% if errors %}
+			<div class="alert alert-danger">
+			<strong>Please correct the errors above</strong>
+			</div>
+		{% endif %}
+		<button class="distinguishedSubmit">Submit</button>
+          	</form>
+          {% else %}
+		The Alumni Card request form has been successfully submitted. Kindly wait for an email from IARC.
+	  {% endif %}
+	</div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

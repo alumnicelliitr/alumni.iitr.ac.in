@@ -10,6 +10,12 @@ import calendar
 import datetime
 # Create your views here.
 
+def samp_index(request):
+  context = {
+    'message':"Welcome to Student Alumni Mentorship Programme",
+  }
+  return render(request,'website/samp_index.html',context)
+
 def load_nodes(level,parent = None):
   mTabs = Node.objects.filter(visibility=True,level=level,parent=parent).order_by('priority')
   for tab in mTabs:
@@ -54,6 +60,55 @@ def level(request,level0,level1 = None,level2 = None):
   }
   return render(request,'website/page.html',context)
 
+##################################################################
+def alumnicard(request):
+  mTabs = load_nodes(0,None)
+  if request.method == "POST":
+    alumniform = AlumniCardForm(request.POST,request.FILES)
+    if alumniform.is_valid():
+      form = alumniform.save()
+      form.save()
+      context = {
+        'form' : alumniform,
+      }
+      #Sending Acknowledgement Email
+      text = render_to_string('website/alumnicardacknowledgement.html',context=context)
+      mail = EmailMessage('Received Request for joining Alumni Association, IIT Roorkee',text,'iitr_daa@iitr.ac.in',['membershipcard.iitraa@gmail.com','iitraa@gmail.com','alumnicell.iitr@gmail.com'])
+      photo = form.photo.read()
+      sign = form.photo_sign.read()
+      degree = form.photo_degree.read()
+      mail.attach(form.photo.name, photo)
+      mail.attach(form.photo_sign.name, sign)
+      mail.attach(form.photo_degree.name,degree)
+      mail.send()
+
+      context = {
+        'mTabs': mTabs,
+        'success' : True
+      }
+      return render(request,'website/alumnicardform.html',context)
+    else:
+      errors = alumniform.errors
+      context = {
+        'mTabs': mTabs,
+        'alumniform' : alumniform,
+        'success' : False,
+        'errors' : errors,
+      }
+      return render(request,'website/alumnicardform.html',context)
+  else:
+    alumniform = AlumniCardForm()
+    context = {
+      'mTabs': mTabs,
+      'alumniform' : alumniform,
+      'success' : False
+    }
+  return render(request,'website/alumnicardform.html',context)
+
+##########################################################################
+##########################################################################
+
+
 def distinguishedformnew(request):
   mTabs = load_nodes(0,None)
   if request.method == "POST":
@@ -71,20 +126,23 @@ def distinguishedformnew(request):
 
       #Sending Acknowledgement Email
       text = render_to_string('website/acknowledgement.html',context=context)
-      mail = EmailMessage('Nomination for DAA received',text,'nik17.ucs2014@iitr.ac.in',[form.nominee_email,form2.nominator_email,'nikhilsheoran96@gmail.com'])
-      mail.attach(form.nominee_photo.name, form.nominee_photo.read())
-      mail.attach(form.nominee_resume.name, form.nominee_resume.read())
+      mail = EmailMessage('Nomination for DAA received',text,'iitr_daa@iitr.ac.in',[form.nominee_email,form2.nominator_email,'dora@iitr.ac.in','nikhilsheoran96@gmail.com'])
+      nominee_photo = form.nominee_photo.read()
+      nominee_resume = form.nominee_resume.read()
+      mail.attach(form.nominee_photo.name, nominee_photo)
+      mail.attach(form.nominee_resume.name, nominee_resume)
       if form.nominee_optional1:
-        mail.attach(form.nominee_optional1.name, form.nominee_optional1.read())
+        nominee_optional = form.nominee_optional1.read()
+        mail.attach(form.nominee_optional1.name, nominee_optional)
       mail.send()
 
       #Sending Details Mail
       text = render_to_string('website/mail.html',context=context)
-      mail = EmailMessage('Distinguished Alumni Application',text,'nik17.ucs2014@iitr.ac.in',['nikhilsheoran96@gmail.com'])
-      mail.attach(form.nominee_photo.name, form.nominee_photo.read())
-      mail.attach(form.nominee_resume.name, form.nominee_resume.read())
+      mail = EmailMessage('Distinguished Alumni Application',text,'iitr_daa@iitr.ac.in',['dora@iitr.ac.in','nikhilsheoran96@gmail.com'])
+      mail.attach(form.nominee_photo.name, nominee_photo)
+      mail.attach(form.nominee_resume.name, nominee_resume)
       if form.nominee_optional1:
-        mail.attach(form.nominee_optional1.name, form.nominee_optional1.read())
+        mail.attach(form.nominee_optional1.name, nominee_optional)
       mail.send()
 
       context = {

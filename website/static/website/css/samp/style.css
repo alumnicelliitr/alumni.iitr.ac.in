@@ -1,0 +1,179 @@
+html, body {
+   margin:0;
+   padding:0;
+   height:100%;
+}
+
+.bg-faded {
+    background-color: #292929 !important;
+}
+
+.no-pad {
+	padding: 0;
+}
+
+.wrapper {
+	min-height:calc(100vh - 70px);
+	padding: 0;
+}
+
+#body {
+   padding-bottom:35px;
+}
+
+#footer {
+   height:50px;
+}
+
+.login-container {
+	padding-bottom: 72px;
+}
+
+.email-container {
+	padding-bottom: 80px;
+	padding-left: 0;
+	padding-right: 0;
+}
+
+.container {
+	height: 100%;
+}
+
+.home-link {
+	text-decoration: none;
+	color: #4ea8c2;
+}
+
+.home-link:hover{
+	text-decoration: none;
+	color: #348197; 
+}
+
+.home-link:focus {
+	outline: 0;
+}
+
+.mentee-custom-card {
+	background-color: #ffffff;
+	border: 1px solid #ececec;
+    padding: 20px;
+    border-radius: .25rem;
+}
+
+.m-t-20{
+	margin-top: 20px;
+}
+
+.m-b-0{
+	margin-bottom: 0;
+}
+
+.m-l-10{
+	margin-left: 30px;
+}
+
+.p-l-0{
+	padding-left: 0;
+}
+
+.mentee-user-profile {
+	border-radius: 50%;
+	height: 150px;
+	width: 150px;
+}
+
+.mentor-image {
+	width: 100%;
+}
+
+.mentor-user-profile {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+.card {
+	width: 20rem !important;
+	padding: 0px;
+	padding-top: 10px;
+	margin-bottom: 20px;
+}
+
+.mentee-card-image {
+	padding: 20px;
+}
+
+.float-left {
+	float: left; 
+}
+
+.float-right {
+	float: right;
+}
+
+#id_username, #id_password {
+	border-radius: 5px;
+	padding: 10px;
+	border: 1px solid #BDBDBD;
+	width: 100%;
+}
+
+.mentor_error_message {
+	color: red;
+}
+
+.mentor_error_message_check{
+	visibility: hidden;
+}
+
+#hide {
+	visibility: hidden;
+}
+
+.footer{
+	position: absolute;
+	/*bottom: 18px;*/
+	left :0px;
+	right: 0px;
+}
+
+.form-control-feedback {
+	color: #EF5350;
+}
+
+.user-list-element {
+	padding: 12px;
+	border: 1px solid #fafafa;
+}
+
+.user-list-element:hover {
+	background-color: #fafafa;
+}
+
+.user-link {
+	padding: 12px;
+	padding-left: 2px;
+	text-decoration: none;
+}
+
+.user-link:hover {
+	text-decoration: none;
+	color: #0D47A1;
+}
+
+.active-chat-user {
+	background-color: #f3f3f3;
+}
+
+.label {
+    display: inline;
+    margin-left: 25px;
+    position: absolute;
+    margin-top: -20px;
+}
+.checkbox-container {
+  margin-bottom:10px;
+}
+
+.checkbox-container > input {
+	width: 20px !important;
+}

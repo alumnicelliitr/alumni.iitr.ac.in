@@ -19,11 +19,9 @@ from django.conf.urls import url,static
 from django.contrib import admin
 from django.conf import settings
 from website import urls as website_urls
-from connect import urls as connect_urls
 urlpatterns = [
     url(r'^@dm!nstr@t0r/', admin.site.urls),
     #url(r'^admin',admin.site.urls),
     #url(r'^admin/', admin.site.urls),
-    url(r'^connect/',include(connect_urls)),
     url(r'^',include(website_urls)),
 ] + static.static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

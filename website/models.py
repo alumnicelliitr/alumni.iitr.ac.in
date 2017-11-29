@@ -78,10 +78,10 @@ class PhotoSlider(models.Model):
 
 class DistinguishedAlumni(models.Model):
   CATEGORY_CHOICES = (
-        ('Academic Research', 'Academic Research',),
-        ('Corporate Development/Adminstration/Entrepreneurship', 'Corporate Development/Adminstration/Entrepreneurship',),
-        ('Social Sciences/Engineering and Services/Public Adminstration', 'Social Sciences/Engineering and Services/Public Adminstration',),
-        ('Service to Society', 'Service to Society',),
+        ('AR', 'Academic Research',),
+        ('CE', 'Corporate Development/Adminstration/Entrepreneurship',),
+        ('SA', 'Social Sciences/Engineering and Services/Public Adminstration',),
+        ('SS', 'Service to Society',),
     )
   name = models.CharField(max_length=100)
   dob = models.DateField()
@@ -105,10 +105,10 @@ class DistinguishedAlumni(models.Model):
 
 class DistinguishedAlumniNominee(models.Model):
   CATEGORY_CHOICES = (
-        ('Academic Research', 'Academic Research',),
-        ('Corporate Development/Adminstration/Entrepreneurship', 'Corporate Development/Adminstration/Entrepreneurship',),
-        ('Social Sciences/Engineering and Services/Public Adminstration', 'Social Sciences/Engineering and Services/Public Adminstration',),
-        ('Service to Society', 'Service to Society',),
+        ('AR', 'Academic Research',),
+        ('CE', 'Corporate Development/Adminstration/Entrepreneurship',),
+        ('SA', 'Social Sciences/Engineering and Services/Public Adminstration',),
+        ('SS', 'Service to Society',),
     )
   nominee_name = models.CharField(max_length=100)
   nominee_email = models.EmailField()
@@ -127,7 +127,11 @@ class DistinguishedAlumniNominee(models.Model):
   nominee_resume = models.FileField(blank=False,upload_to='website/media/distinguisted/resumes/')
   nominee_optional1 = models.FileField(blank=True,upload_to='website/media/distinguisted/optional/')
   def __str__(self):
-    return self.nominee_name
+    try:
+      nominator = self.nominator.get().nominator_name
+    except:
+      nominator = "NONE"
+    return self.nominee_name+" nominated by "+nominator
   class Meta:
     app_label = 'website'
 
@@ -136,7 +140,7 @@ class DistinguishedAlumniNominator(models.Model):
 	('Y','Yes'),
 	('N','No'),
 	)
-  nominee = models.ForeignKey(DistinguishedAlumniNominee)
+  nominee = models.ForeignKey(DistinguishedAlumniNominee,related_name='nominator')
   nominator_name = models.CharField(max_length=50)
   nominator_email = models.EmailField()
   nominator_contact = models.CharField(max_length=20)
@@ -148,3 +152,33 @@ class DistinguishedAlumniNominator(models.Model):
     return self.nominator_name+" nominated "+self.nominee.nominee_name
   class Meta:
     app_label = 'website'
+
+ADDRESS_CHOICES = (
+	("Office Address","Office Address"),
+	("Residence Address","Residence Address")
+)
+DATE_INPUT_FORMATS = ('%d-%m-%Y','%Y-%m-%d')
+YEAR_CHOICES = ((x,x) for x in range(1847,2017))
+class AlumniCard(models.Model):
+	first_name = models.CharField(max_length=255)
+	middle_name = models.CharField(max_length=255,blank=True)
+	last_name = models.CharField(max_length=255)
+	dob = models.DateField()
+	degree_name = models.CharField(max_length=255)
+	degree_branch = models.CharField(max_length=255)
+	degree_year = models.IntegerField(choices=YEAR_CHOICES)
+	present_desig = models.CharField(max_length=255)
+	present_dept = models.CharField(max_length=255)
+	present_office = models.TextField()
+	present_residence = models.TextField()
+	delivery_address = models.TextField()
+	telephone = models.CharField(max_length=20,blank=True)
+	mobile = models.CharField(max_length=20)
+	email = models.EmailField()
+	address_for_correspondence = models.CharField(choices=ADDRESS_CHOICES,max_length=50)
+	photo = models.ImageField(blank=False,upload_to='website/media/alumnicard/photo/')
+	photo_sign = models.ImageField(blank=False,upload_to='website/media/alumnicard/sign/')
+	photo_degree = models.ImageField(blank=False,upload_to='website/media/alumnicard/degree/')
+
+	def __str__(self):
+		return self.first_name+" "+self.middle_name+" "+self.last_name

@@ -1,0 +1,54 @@
+{% extends 'website/samp_base.html' %}
+
+{% block title %}
+Welcome - 
+{% endblock %}
+
+{% block content %}
+	<!-- <div class="container text-center"> -->
+		<div class="text-center">{{message}}</div>
+		<h4>About Us</h4>
+		<hr>
+		<p>
+		<strong>Student Alumni Mentorship Program</strong> (SAMP) is the flagship initiative of <strong>Institute Alumni Relations Cell</strong> (IARC). Placement season is round the corner and it is natural for the students to panic and seek help from experienced persons. SAMP provides the current final year UG and PG students a platform to connect with last year passout students, who have <i>“Been there, Done that”</i>. With an experienced pool of over <strong>199</strong> mentors and a dedicated IARC team of <strong>38</strong> members that made this ambitious initiative a reality, we hope you’ll draw maximum benefits from this program and it will make the placements season more fruitful for you.
+		</p>
+		<br>
+		<div class="text-center login-container">
+			<div class="row">
+				<br>
+				<div class="col-md-3"></div>
+				<div class="col-md-3 text-center">
+					<a href="#" class="home-link" data-toggle="modal" data-target="#LoginModal">
+						<img src="/static/website/img/samp/teacher.svg" width="200">
+						<br><br>
+						<p><b>Mentor</b></p>
+					</a>
+				</div>
+				<div class="modal fade" id="LoginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+				  <div class="modal-dialog" role="document">
+				    <div class="modal-content">
+				      <div class="modal-header">
+				        <h5 class="modal-title" id="exampleModalLongTitle">Mentor Login</h5>
+				        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				          <span aria-hidden="true">&times;</span>
+				        </button>
+				      </div>
+				      <div class="modal-body text-left">
+						<div class="text-center"><a href="http://people.iitr.ernet.in/login/?next=/samp/">Login with Channel i</a></div>
+						<div class="text-center"><small>If not registered on Channel i, <a href="http://people.iitr.ernet.in/samp/register/">Register Here</a></small></div>
+				      </div>
+				    </div>
+				  </div>
+				</div>
+				<div class="col-md-3 text-center">
+					<a href="https://channeli.in/login?next=/samp/" class="home-link">
+						<img src="/static/website/img/samp/reading.svg" width="200">
+						<br><br>
+						<p><b>Mentee</b></p>
+					</a>
+				</div>
+			</div>
+		</div>
+	<!-- </div> -->
+<script type="text/javascript" src="/static/website/js/samp/main.js"></script>
+{% endblock %}
