@@ -158,7 +158,7 @@ ADDRESS_CHOICES = (
 	("Residence Address","Residence Address")
 )
 DATE_INPUT_FORMATS = ('%d-%m-%Y','%Y-%m-%d')
-YEAR_CHOICES = ((x,x) for x in range(1847,2017))
+YEAR_CHOICES = ((x,x) for x in range(1847,2018))
 class AlumniCard(models.Model):
 	first_name = models.CharField(max_length=255)
 	middle_name = models.CharField(max_length=255,blank=True)
@@ -182,3 +182,9 @@ class AlumniCard(models.Model):
 
 	def __str__(self):
 		return self.first_name+" "+self.middle_name+" "+self.last_name
+
+from django.core.validators import validate_email
+class Subscriber(models.Model):
+	email = models.EmailField(unique=True,validators=[validate_email])
+	subscription_key = models.CharField(max_length=32,unique=True)
+	is_subscribed = models.BooleanField(default=True)

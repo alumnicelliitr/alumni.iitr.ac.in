@@ -24,6 +24,7 @@ urlpatterns = [
 	url(r'^card/$',views.alumnicard),
 	url(r'^distinguished$', views.distinguishedformnew),
 	url(r'^distinguished/$', views.distinguishedformnew),
+	url(r'^unsubscribe/(?P<key>(.*))/$',views.unsubscribe),
 	url(r'^(?P<level0>[a-z]+)$',views.level),
 	url(r'^(?P<level0>[a-z]+)/(?P<level1>[a-z]+)$',views.level),
 	url(r'^(?P<level0>[a-z]+)/(?P<level1>[a-z]+)/(?P<level2>[a-z]+)$',views.level)

@@ -9,11 +9,11 @@
     </title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
     <!-- Place favicon.ico in the root directory -->
     <link rel="shortcut icon" href="/static/website/images/favicon.ico" type="image/x-icon">
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/components/icon.css">
     <link rel="stylesheet" href="/static/website/css/normalize.css">
     <link rel="stylesheet" href="/static/website/css/main.css">
     <link rel="stylesheet" href="/static/website/css/style.css">
@@ -93,6 +93,15 @@
         <div class="seven wide column">
           <h4 class="ui inverted header">Dean Of Resources and Alumni Affairs</h4>
           <p>Indian Institute Of Technology, Roorkee</p>
+	  <div>
+	  <h5>Subscribe for updates</h5>
+		<form method="POST" action="/">
+		{% csrf_token %}
+		<div class="ui input">
+		<input name="email" placeholder="Your Email Address" type="email"></div>
+		<button type="submit" class="ui button">Subscribe</button>
+		</form>
+	  </div>
         </div>
       </div>
     </div>

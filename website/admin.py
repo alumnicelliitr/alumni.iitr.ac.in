@@ -11,6 +11,10 @@ class AlumniCardResource(resources.ModelResource):
 class AlumniCardAdmin(ImportExportModelAdmin):
 	resource_class = AlumniCardResource
 
+class SubscriberAdmin(admin.ModelAdmin):
+	list_display = ('email','is_subscribed')
+	list_filter = ('is_subscribed',)
+
 admin.site.register(Node)
 admin.site.register(Event)
 admin.site.register(News)
@@ -20,6 +24,7 @@ admin.site.register(PhotoSlider)
 admin.site.register(DistinguishedAlumniNominator)
 admin.site.register(DistinguishedAlumniNominee)
 admin.site.register(AlumniCard,AlumniCardAdmin)
+admin.site.register(Subscriber,SubscriberAdmin)
 #class NomineeAdmin(admin.ModelAdmin):
 #	exclude = ('nominee_category',)
 #	form = DistinguishFormNomineeAdmin

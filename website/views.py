@@ -71,17 +71,20 @@ def alumnicard(request):
       context = {
         'form' : alumniform,
       }
-      #Sending Acknowledgement Email
-      text = render_to_string('website/alumnicardacknowledgement.html',context=context)
-      mail = EmailMessage('Received Request for joining Alumni Association, IIT Roorkee',text,'iitr_daa@iitr.ac.in',['membershipcard.iitraa@gmail.com','iitraa@gmail.com','alumnicell.iitr@gmail.com'])
-      photo = form.photo.read()
-      sign = form.photo_sign.read()
-      degree = form.photo_degree.read()
-      mail.attach(form.photo.name, photo)
-      mail.attach(form.photo_sign.name, sign)
-      mail.attach(form.photo_degree.name,degree)
-      mail.send()
-
+      try:
+        #Sending Acknowledgement Email
+        text = render_to_string('website/alumnicardacknowledgement.html',context=context)
+        mail = EmailMessage('Received Request for joining Alumni Association, IIT Roorkee',text,'iitr_daa@iitr.ac.in',['membershipcard.iitraa@gmail.com','iitraa@gmail.com','alumnicell.iitr@gmail.com'])
+        photo = form.photo.read()
+        sign = form.photo_sign.read()
+        degree = form.photo_degree.read()
+        mail.attach(form.photo.name, photo)
+        mail.attach(form.photo_sign.name, sign)
+        mail.attach(form.photo_degree.name,degree)
+        mail.send()
+      except:
+        print("MAIL NOT SENT")
+        pass
       context = {
         'mTabs': mTabs,
         'success' : True
@@ -217,8 +220,29 @@ def distinguishedformnew(request):
 #    }
 #  return render(request,'website/distinguishform.html',context)
 #
-
+from django.core.validators import validate_email
+import uuid
 def index(request):
+  message = ''
+  if request.method == "POST":
+    email = request.POST.get('email','')
+    try:
+      validate_email(email)
+      key = uuid.uuid1().hex
+      try:
+        existing = Subscriber.objects.get(email=email)
+        existing.is_subscribed = True
+        existing.save()
+        message = "Email successfully subscribed"
+      except:
+        try:
+          obj = Subscriber.objects.create(email=email,subscription_key=key)
+          message = "Email successfully subscribed"
+        except:
+          message = "Invalid email address"
+    except:
+      message = 'Invalid email address'
+#    return HttpResponse(message) 
   mTabs = load_nodes(0,None)
   mEvents = Event.objects.filter(visibility=True,expiry_date__gte=datetime.date.today()).order_by('priority')
   mEventsPast = Event.objects.filter(visibility=True,expiry_date__lte=datetime.date.today()).order_by('priority')
@@ -232,5 +256,17 @@ def index(request):
     'mLinks':mLinks,
     'mNews':mNews,
     'mSlider':mSlider,
+    'message':message,
   }
   return render(request,'website/index.html',context)
+
+def unsubscribe(request,key):
+  message = ''
+  try:
+    subscriber = Subscriber.objects.get(subscription_key=key)
+    subscriber.is_subscribed = False
+    subscriber.save()
+    message = 'Unsubscribed successfully'
+  except:
+    message = 'Invalid Subscription key'
+  return HttpResponse(message)

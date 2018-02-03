@@ -6,8 +6,15 @@ Dean Of Resources and Alumni Affairs
 
 {% block content %}
     <!-- Flickity HTML init -->
+  {% if message != '' %}
+    <div class="ui yellow compact message">
+      <i class="close icon"></i>
+      <p>{{message}}</p>
+    </div>
+  {% endif %}
+ 
   <section class='main-section'>
-    <div class="carousel hero main-carousel" >
+   <div class="carousel hero main-carousel" >
       {% for slider in mSlider %}
         <div class="carousel-cell hero-cell">
           <img src="/media/{{ slider.image }}" alt-text="{{ slider.title }}"></img>
@@ -126,5 +133,12 @@ Dean Of Resources and Alumni Affairs
       </div>
     </div>
   </section>
-
+<script>
+$('.message .close').on('click', function() {
+    $(this)
+      .closest('.message')
+      .transition('fade')
+    ;
+  });
+</script>
 {% endblock %}
