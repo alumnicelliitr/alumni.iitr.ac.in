@@ -132,3 +132,13 @@ class DistinguishFormNominator(ModelForm):
 		'nominator_address':forms.Textarea(attrs={'rows':4}),
 		'nominator_affiliation':forms.Textarea(attrs={'rows':4}),
 	}
+
+class SubscriberForm(ModelForm):
+	class Meta:
+		model = Subscriber
+		exclude = ('is_subscribed','id', 'subscription_key')
+
+
+class UserForm(forms.Form):
+    email = forms.EmailField()	
+    password = forms.CharField(widget=forms.PasswordInput())	

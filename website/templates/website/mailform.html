@@ -1,0 +1,50 @@
+{% extends 'website/base.html' %}
+
+{% block title %}
+Dean Of Resources and Alumni Affairs
+{% endblock %}
+
+{% block content %}
+
+<section class="content">
+  <div class="ui container">
+    <div class="ui grid">
+      <div class="four wide column">
+        <div class="ui vertical pointing menu width100">
+          <h4 class="item block header side-h">
+          Send Mail
+          </h4>
+              <div class="item">
+			Send Mail to all Subscribers
+	      </div>
+        </div>
+      </div>
+
+      <div class="twelve wide column">
+        <h4 class="ui top attached block header">
+          Enter your credentials
+        </h4>
+        <div class="distinguishedForm">
+        	{% if success == False %}
+          	<form method="post" action="." class="ui form">
+            	{% csrf_token %}
+            	{% for field in userform %}
+              	<div class="field">
+                	<label for="{{ field.auto_id }}">{{ field.label_tag }}
+                	{% if field.field.required %}
+                    		<span class="required">*</span>
+                	{% endif %}
+                	</label>
+                	{{ field }}
+              	</div>
+            	{% endfor %}
+          	<input type="submit" name="">
+          	</form>
+          	{% else %} Successfully Sent
+          	{% endif %}
+	</div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
