@@ -1,11 +1,13 @@
 {% autoescape off %}
-{% if sub.name %}<h4>hi {{ sub.name }}</h4>{% endif %}
-
-<p>You have been subscribed again </p>
+{% if sub.name %}Hello {{ sub.name }}{% endif %}
+<br>
+<p>You have been successfully subscribed again </p>
 <br><br>
-<ul>    
-    <li><a href="http://{{ domain }}{% url 'website:unsubscribe' sub.subscription_key %}">Unsubscribe Again</a></li>
-    <li><a href="http://{{ domain }}{% url 'website:update' sub.subscription_key %}">Update Details</a></li>
-</ul>
 
+
+<p>   
+This message was sent to {{ sub.email }}  {{ sub.name }} .
+If you do not want to receive any updates from Alumni Affairs IIT Roorkee, <a href="http://{{ domain }}{% url 'website:unsubscribe' sub.subscription_key %}">this link. </a>
+To update your preferences visit <a href="http://{{ domain }}{% url 'website:update' sub.subscription_key %}"> this link.</a>
+</p>
 {% endautoescape %}

@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from django.template.loader import render_to_string
-from django.core.mail import EmailMessage as EmailMsg
+from django.core.mail import EmailMessage as EmailMsg, get_connection
 from datetime import datetime
 from django.shortcuts import render,get_object_or_404
 from django.http import Http404, HttpResponseRedirect, HttpResponse
@@ -281,7 +281,7 @@ def unsubscribe(request,key):
     message = 'Unsubscribed successfully'
   except:
     message = 'Invalid Subscription key'
-  return HttpResponse(message)
+  return render(request, 'website/sub-unsub.html', {'message':message, }) 
 
 def resubscribe(request,key):
   message = ''
@@ -302,26 +302,46 @@ def resubscribe(request,key):
     message = 'Subscribed successfully'
   except:
     message = 'Invalid Subscription key'
-  return HttpResponse(message)  
+  return render(request, 'website/sub-unsub.html', {'message':message, })  
 
 def send_mail(request,id):
   message = get_object_or_404(EmailMessage, pk=id)
   subscribers = Subscriber.objects.filter(is_subscribed=True)
   mail_subject = message.subject
   current_site = get_current_site(request)
-  for sub in subscribers:
-    text = render_to_string('website/msg.html', {
+  my_host = 'smtp.gmail.com'
+  my_port = 587
+  my_use_tls = True
+  form = UserForm()
+  success=False
+  if request.method == "POST":
+    form = UserForm(request.POST)
+    if form.is_valid():
+      my_username = form.cleaned_data['email']
+      my_password = form.cleaned_data['password']
+      connection = get_connection(host=my_host, 
+                            port=my_port, 
+                            username=my_username, 
+                            password=my_password, 
+                            use_tls=my_use_tls)
+      connection.open()
+      for sub in subscribers:
+        text = render_to_string('website/msg.html', {
                 'domain':current_site.domain,
                 'sub': sub,
                 'msg': message,
             })
-    to_email = sub.email
-    print(to_email)
-    email = EmailMsg(mail_subject, text, to=[to_email])
-    email.content_subtype = 'html'
-    email.send()
-  return HttpResponse("sent successfully")
-
+        to_email = sub.email
+        email = EmailMsg(mail_subject, text, to=[to_email], connection=connection)
+        email.content_subtype = 'html'
+        email.send()
+      connection.close()  
+      success = True
+  context = {
+            'userform'  : form,
+            'success' : success,
+        }
+  return render(request, 'website/mailform.html', context)     
 
 def update_profile(request, key):
     """update the subscriberprofile"""
@@ -332,7 +352,7 @@ def update_profile(request, key):
       return HttpResponse(message)
     if request.method == 'POST':
         userform = SubscriberForm(request.POST, instance=user)
-        message = ''
+        message = 'Successfully Updated'
         if userform.is_valid():
             userform.save()
             message = 'successfully updated'

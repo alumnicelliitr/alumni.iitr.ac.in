@@ -137,3 +137,8 @@ class SubscriberForm(ModelForm):
 	class Meta:
 		model = Subscriber
 		exclude = ('is_subscribed','id', 'subscription_key')
+
+
+class UserForm(forms.Form):
+    email = forms.EmailField()	
+    password = forms.CharField(widget=forms.PasswordInput())	

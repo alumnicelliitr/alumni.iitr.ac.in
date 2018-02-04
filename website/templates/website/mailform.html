@@ -12,32 +12,23 @@ Dean Of Resources and Alumni Affairs
       <div class="four wide column">
         <div class="ui vertical pointing menu width100">
           <h4 class="item block header side-h">
-          Edit Email Preferences
+          Send Mail
           </h4>
               <div class="item">
-		Edit Email Preferences
+			Send Mail to all Subscribers
 	      </div>
         </div>
       </div>
 
       <div class="twelve wide column">
         <h4 class="ui top attached block header">
-          Email Preferences - Form
+          Enter your credentials
         </h4>
-        {% if message %}
-        <div class="alert alert-success">
-          <strong>Success!</strong> 
-        </div>
-        {% endif %}
         <div class="distinguishedForm">
+        	{% if success == False %}
           	<form method="post" action="." class="ui form">
             	{% csrf_token %}
             	{% for field in userform %}
-              {% for error in field.errors %}
-                <div class="alert alert-danger">
-                   <strong>{{ error|escape }}</strong>
-                </div>
-              {% endfor %}
               	<div class="field">
                 	<label for="{{ field.auto_id }}">{{ field.label_tag }}
                 	{% if field.field.required %}
@@ -49,6 +40,8 @@ Dean Of Resources and Alumni Affairs
             	{% endfor %}
           	<input type="submit" name="">
           	</form>
+          	{% else %} Successfully Sent
+          	{% endif %}
 	</div>
       </div>
     </div>

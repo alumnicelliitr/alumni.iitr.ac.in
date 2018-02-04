@@ -1,10 +1,11 @@
 {% autoescape off %}
-{% if sub.name %}<h4>hi {{ sub.name }}</h4>{% endif %}
-
+{% if sub.name %}Hello {{ sub.name }}{% endif %}
+<br>
 <p>You have been unsubscribed successfully </p>
 <br><br>
-<ul>    
-    <li><a href="http://{{ domain }}{% url 'website:resubscribe' sub.subscription_key %}">Subscribe Again</a></li>
-</ul>
 
+<p>   
+This message was sent to {{ sub.email }}  {{ sub.name }} .
+If you want to resubscribe for  any updates from Alumni Affairs IIT Roorkee, <a href="http://{{ domain }}{% url 'website:resubscribe' sub.subscription_key %}">this link. </a>
+</p>
 {% endautoescape %}

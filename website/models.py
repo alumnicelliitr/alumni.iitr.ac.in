@@ -189,10 +189,10 @@ class AlumniCard(models.Model):
 from django.core.validators import validate_email
 class Subscriber(models.Model):
   email = models.EmailField(unique=True,validators=[validate_email])
-  subscription_key = models.CharField(max_length=32,unique=True)
+  subscription_key = models.CharField(max_length=32,unique=True, blank=True)
   is_subscribed = models.BooleanField(default=True)
   name = models.CharField(max_length=255, blank=True)
-  contact = models.IntegerField(blank=True, null=True)
+  contact = models.BigIntegerField(blank=True, null=True)
   state = models.CharField(max_length=255, blank=True)
   country = models.CharField(max_length=255, blank=True)
   company = models.CharField(max_length=255, blank=True)
