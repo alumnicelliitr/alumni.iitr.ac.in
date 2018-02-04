@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from django.template.loader import render_to_string
-from django.core.mail import send_mail, EmailMessage
+from django.core.mail import EmailMessage as EmailMsg
 from datetime import datetime
 from django.shortcuts import render,get_object_or_404
 from django.http import Http404, HttpResponseRedirect, HttpResponse
@@ -74,7 +74,7 @@ def alumnicard(request):
       try:
         #Sending Acknowledgement Email
         text = render_to_string('website/alumnicardacknowledgement.html',context=context)
-        mail = EmailMessage('Received Request for joining Alumni Association, IIT Roorkee',text,'iitr_daa@iitr.ac.in',['membershipcard.iitraa@gmail.com','iitraa@gmail.com','alumnicell.iitr@gmail.com'])
+        mail = EmailMsg('Received Request for joining Alumni Association, IIT Roorkee',text,'iitr_daa@iitr.ac.in',['membershipcard.iitraa@gmail.com','iitraa@gmail.com','alumnicell.iitr@gmail.com'])
         photo = form.photo.read()
         sign = form.photo_sign.read()
         degree = form.photo_degree.read()
@@ -129,7 +129,7 @@ def distinguishedformnew(request):
 
       #Sending Acknowledgement Email
       text = render_to_string('website/acknowledgement.html',context=context)
-      mail = EmailMessage('Nomination for DAA received',text,'iitr_daa@iitr.ac.in',[form.nominee_email,form2.nominator_email,'dora@iitr.ac.in','nikhilsheoran96@gmail.com'])
+      mail = EmailMsg('Nomination for DAA received',text,'iitr_daa@iitr.ac.in',[form.nominee_email,form2.nominator_email,'dora@iitr.ac.in','nikhilsheoran96@gmail.com'])
       nominee_photo = form.nominee_photo.read()
       nominee_resume = form.nominee_resume.read()
       mail.attach(form.nominee_photo.name, nominee_photo)
@@ -141,7 +141,7 @@ def distinguishedformnew(request):
 
       #Sending Details Mail
       text = render_to_string('website/mail.html',context=context)
-      mail = EmailMessage('Distinguished Alumni Application',text,'iitr_daa@iitr.ac.in',['dora@iitr.ac.in','nikhilsheoran96@gmail.com'])
+      mail = EmailMsg('Distinguished Alumni Application',text,'iitr_daa@iitr.ac.in',['dora@iitr.ac.in','nikhilsheoran96@gmail.com'])
       mail.attach(form.nominee_photo.name, nominee_photo)
       mail.attach(form.nominee_resume.name, nominee_resume)
       if form.nominee_optional1:
@@ -260,13 +260,90 @@ def index(request):
   }
   return render(request,'website/index.html',context)
 
+from django.contrib.sites.shortcuts import get_current_site
+
 def unsubscribe(request,key):
   message = ''
   try:
     subscriber = Subscriber.objects.get(subscription_key=key)
     subscriber.is_subscribed = False
     subscriber.save()
+    mail_subject = 'Unsubscribe to AlumniIITR'
+    current_site = get_current_site(request)
+    text = render_to_string('website/unsubscribe.html', {
+                'domain':current_site.domain,
+                'sub': subscriber,
+            })
+    to_email = subscriber.email
+    email = EmailMsg(mail_subject, text, to=[to_email])
+    email.content_subtype = 'html'
+    email.send()
     message = 'Unsubscribed successfully'
   except:
     message = 'Invalid Subscription key'
   return HttpResponse(message)
+
+def resubscribe(request,key):
+  message = ''
+  try:
+    subscriber = Subscriber.objects.get(subscription_key=key)
+    subscriber.is_subscribed = True
+    subscriber.save()
+    mail_subject = 'Resubscribe to AlumniIITR'
+    current_site = get_current_site(request)
+    text = render_to_string('website/resubscribe.html', {
+                'domain':current_site.domain,
+                'sub': subscriber,
+            })
+    to_email = subscriber.email
+    email = EmailMsg(mail_subject, text, to=[to_email])
+    email.content_subtype = 'html'
+    email.send()
+    message = 'Subscribed successfully'
+  except:
+    message = 'Invalid Subscription key'
+  return HttpResponse(message)  
+
+def send_mail(request,id):
+  message = get_object_or_404(EmailMessage, pk=id)
+  subscribers = Subscriber.objects.filter(is_subscribed=True)
+  mail_subject = message.subject
+  current_site = get_current_site(request)
+  for sub in subscribers:
+    text = render_to_string('website/msg.html', {
+                'domain':current_site.domain,
+                'sub': sub,
+                'msg': message,
+            })
+    to_email = sub.email
+    print(to_email)
+    email = EmailMsg(mail_subject, text, to=[to_email])
+    email.content_subtype = 'html'
+    email.send()
+  return HttpResponse("sent successfully")
+
+
+def update_profile(request, key):
+    """update the subscriberprofile"""
+    try:
+      user = Subscriber.objects.get(subscription_key=key)
+    except:
+      message = 'Invalid Subscription key'
+      return HttpResponse(message)
+    if request.method == 'POST':
+        userform = SubscriberForm(request.POST, instance=user)
+        message = ''
+        if userform.is_valid():
+            userform.save()
+            message = 'successfully updated'
+        context = {
+            'userform' : userform,
+            'message' : message,
+        }   
+        return render(request, 'website/editProfile.html', context) 
+    else:    
+        userform = SubscriberForm(instance=user)
+        context = {
+            'userform'  : userform,
+        }
+        return render(request, 'website/editProfile.html', context)  

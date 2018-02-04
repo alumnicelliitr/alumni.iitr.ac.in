@@ -2,6 +2,9 @@ from __future__ import unicode_literals
 
 from django.db import models
 from ckeditor.fields import RichTextField
+from django.db.models.signals import pre_save
+from django.dispatch import receiver
+import uuid
 # Create your models here.
 
 class Node(models.Model):
@@ -185,6 +188,24 @@ class AlumniCard(models.Model):
 
 from django.core.validators import validate_email
 class Subscriber(models.Model):
-	email = models.EmailField(unique=True,validators=[validate_email])
-	subscription_key = models.CharField(max_length=32,unique=True)
-	is_subscribed = models.BooleanField(default=True)
+  email = models.EmailField(unique=True,validators=[validate_email])
+  subscription_key = models.CharField(max_length=32,unique=True)
+  is_subscribed = models.BooleanField(default=True)
+  name = models.CharField(max_length=255, blank=True)
+  contact = models.IntegerField(blank=True, null=True)
+  state = models.CharField(max_length=255, blank=True)
+  country = models.CharField(max_length=255, blank=True)
+  company = models.CharField(max_length=255, blank=True)
+  address = models.TextField(blank=True)
+
+@receiver(pre_save, sender=Subscriber)
+def create_subscriber(sender, instance, **kwargs):
+    if instance._state.adding :
+      key = uuid.uuid1().hex
+      instance.subscription_key = key
+
+class EmailMessage(models.Model):
+  subject = models.CharField(max_length=255)
+  created_on = models.DateTimeField(auto_now_add=True)
+  message = RichTextField(default='')
+  include_name= models.BooleanField(default=True)
