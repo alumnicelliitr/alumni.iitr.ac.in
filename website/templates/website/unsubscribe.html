@@ -5,7 +5,7 @@
 <br><br>
 
 <p>   
-This message was sent to {{ sub.email }}  {{ sub.name }} .
-If you want to resubscribe for  any updates from Alumni Affairs IIT Roorkee, <a href="http://{{ domain }}{% url 'website:resubscribe' sub.subscription_key %}">this link. </a>
+This message was sent to {{ sub.email }}  {{ sub.name }} .<br>
+If you want to resubscribe for  any updates from Alumni Affairs IIT Roorkee, <a href="http://{{ domain }}{% url 'website:resubscribe' sub.subscription_key %}">this link </a>
 </p>
 {% endautoescape %}
