@@ -6,8 +6,8 @@
 
 
 <p>   
-This message was sent to {{ sub.email }}  {{ sub.name }} .
-If you do not want to receive any updates from Alumni Affairs IIT Roorkee, <a href="http://{{ domain }}{% url 'website:unsubscribe' sub.subscription_key %}">this link. </a>
+This message was sent to {{ sub.email }}  {{ sub.name }} .<br>
+If you do not want to receive any updates from Alumni Affairs IIT Roorkee, <a href="http://{{ domain }}{% url 'website:unsubscribe' sub.subscription_key %}">this link </a><br>
 To update your preferences visit <a href="http://{{ domain }}{% url 'website:update' sub.subscription_key %}"> this link.</a>
 </p>
 {% endautoescape %}
