@@ -309,9 +309,9 @@ def send_mail(request,id):
   subscribers = Subscriber.objects.filter(is_subscribed=True)
   mail_subject = message.subject
   current_site = get_current_site(request)
-  my_host = 'smtp.gmail.com'
+  my_host = 'smtp.iitr.ac.in'
   my_port = 587
-  my_use_tls = True
+  my_use_tls = False
   form = UserForm()
   success=False
   if request.method == "POST":
