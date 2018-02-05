@@ -137,8 +137,8 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(PROJECT_DIR,'media')
 
 EMAIL_USE_TLS = False
-EMAIL_HOST = 'smtp.iitr.ac.in'
-EMAIL_HOST_USER = 'alumnicell@iitr.ac.in'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'alumni.iitr@gmail.com'
 EMAIL_HOST_PASSWORD = ''
 EMAIL_PORT = 587
 
