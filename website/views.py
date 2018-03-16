@@ -337,6 +337,7 @@ def send_mail(request,id):
                             username=my_username, 
                             password=my_password)
       connection.open()
+      emails = []
       for sub in subscribers:
         text = render_to_string('website/msg.html', {
                 'domain':current_site.domain,
@@ -348,8 +349,10 @@ def send_mail(request,id):
         email = EmailMultiAlternatives(mail_subject, text, my_username, [to_email])
         #email.attach_alternative(text_content, "text/html")
         email.content_subtype = 'html'
-        email.send()
-      connection.close()  
+        emails.append(email)
+        #email.send()
+      connection.send_messages(emails) 
+      connection.close()
       success = True
   context = {
             'userform'  : form,
