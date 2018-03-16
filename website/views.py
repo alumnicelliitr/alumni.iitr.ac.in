@@ -4,10 +4,12 @@ from django.core.mail import EmailMessage as EmailMsg, get_connection
 from datetime import datetime
 from django.shortcuts import render,get_object_or_404
 from django.http import Http404, HttpResponseRedirect, HttpResponse
+from django.core.mail import EmailMultiAlternatives
 from website.models import *
 from website.forms import *
 import calendar
 import datetime
+from arc import settings
 # Create your views here.
 
 def samp_index(request):
@@ -267,7 +269,6 @@ def unsubscribe(request,key):
   try:
     subscriber = Subscriber.objects.get(subscription_key=key)
     subscriber.is_subscribed = False
-    subscriber.save()
     mail_subject = 'Unsubscribe to AlumniIITR'
     current_site = get_current_site(request)
     text = render_to_string('website/unsubscribe.html', {
@@ -275,9 +276,15 @@ def unsubscribe(request,key):
                 'sub': subscriber,
             })
     to_email = subscriber.email
-    email = EmailMsg(mail_subject, text, to=[to_email])
+    my_username = settings.EMAIL_HOST_USER
+    print('done done')
+    connection = get_connection() # uses SMTP server specified in settings.py
+    connection.open()
+    email = EmailMultiAlternatives(mail_subject, text, my_username, to=[to_email])
     email.content_subtype = 'html'
     email.send()
+    connection.close() 
+    subscriber.save()
     message = 'Unsubscribed successfully'
   except:
     message = 'Invalid Subscription key'
@@ -296,22 +303,29 @@ def resubscribe(request,key):
                 'sub': subscriber,
             })
     to_email = subscriber.email
-    email = EmailMsg(mail_subject, text, to=[to_email])
+    my_username = settings.EMAIL_HOST_USER
+    print()
+    connection = get_connection() # uses SMTP server specified in settings.py
+    connection.open()
+    email = EmailMultiAlternatives(mail_subject, text, my_username, to=[to_email])
+    print('done done')
     email.content_subtype = 'html'
     email.send()
+    connection.close() 
+    subscriber.save()
     message = 'Subscribed successfully'
   except:
     message = 'Invalid Subscription key'
   return render(request, 'website/sub-unsub.html', {'message':message, })  
+
+
+from django.utils.html import strip_tags
 
 def send_mail(request,id):
   message = get_object_or_404(EmailMessage, pk=id)
   subscribers = Subscriber.objects.filter(is_subscribed=True)
   mail_subject = message.subject
   current_site = get_current_site(request)
-  my_host = 'smtp.gmail.com'
-  my_port = 587
-  my_use_tls = True
   form = UserForm()
   success=False
   if request.method == "POST":
@@ -319,11 +333,9 @@ def send_mail(request,id):
     if form.is_valid():
       my_username = form.cleaned_data['email']
       my_password = form.cleaned_data['password']
-      connection = get_connection(host=my_host, 
-                            port=my_port, 
+      connection = get_connection( 
                             username=my_username, 
-                            password=my_password, 
-                            use_tls=my_use_tls)
+                            password=my_password)
       connection.open()
       for sub in subscribers:
         text = render_to_string('website/msg.html', {
@@ -332,7 +344,9 @@ def send_mail(request,id):
                 'msg': message,
             })
         to_email = sub.email
-        email = EmailMsg(mail_subject, text, to=[to_email], connection=connection)
+        #email = EmailMsg(mail_subject, text, to=[to_email], connection=connection)
+        email = EmailMultiAlternatives(mail_subject, text, my_username, [to_email])
+        #email.attach_alternative(text_content, "text/html")
         email.content_subtype = 'html'
         email.send()
       connection.close()  
@@ -367,3 +381,5 @@ def update_profile(request, key):
             'userform'  : userform,
         }
         return render(request, 'website/editProfile.html', context)  
+
+
